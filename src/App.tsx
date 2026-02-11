@@ -1,24 +1,76 @@
 import { useState } from 'react';
 import Calculator from './components/Calculator';
 import { handleDigitInput, handleDecimalInput } from './logic/inputHandlers';
+import { handleOperatorInput, handleEqualsInput, handleClearInput, CalculatorState } from './logic/operationHandlers';
 
 function App() {
   const [displayValue, setDisplayValue] = useState('0');
+  const [previousValue, setPreviousValue] = useState<string | null>(null);
+  const [operator, setOperator] = useState<string | null>(null);
+  const [waitingForOperand, setWaitingForOperand] = useState(false);
+
+  const getCurrentState = (): CalculatorState => ({
+    displayValue,
+    previousValue,
+    operator,
+    waitingForOperand,
+  });
+
+  const applyState = (newState: CalculatorState) => {
+    setDisplayValue(newState.displayValue);
+    setPreviousValue(newState.previousValue);
+    setOperator(newState.operator);
+    setWaitingForOperand(newState.waitingForOperand);
+  };
 
   const handleButtonClick = (value: string) => {
+    // Handle clear input (always works, even from Error state)
+    if (value === 'C') {
+      applyState(handleClearInput());
+      return;
+    }
+
     // Handle digit input (0-9)
     if (/^[0-9]$/.test(value)) {
-      setDisplayValue(prev => handleDigitInput(prev, value));
+      // If waiting for operand, start a new number
+      if (waitingForOperand) {
+        setDisplayValue(value);
+        setWaitingForOperand(false);
+      } else {
+        setDisplayValue(prev => handleDigitInput(prev, value));
+      }
       return;
     }
 
     // Handle decimal point input
     if (value === '.') {
-      setDisplayValue(prev => handleDecimalInput(prev));
+      // If waiting for operand, start fresh with "0."
+      if (waitingForOperand) {
+        setDisplayValue('0.');
+        setWaitingForOperand(false);
+      } else {
+        setDisplayValue(prev => handleDecimalInput(prev));
+      }
       return;
     }
 
-    // TODO: Phase 3 - handle operators, equals, clear
+    // Handle equals input
+    if (value === '=') {
+      // Ignore if display shows Error
+      if (displayValue !== 'Error') {
+        applyState(handleEqualsInput(getCurrentState()));
+      }
+      return;
+    }
+
+    // Handle operator input (+, -, *, /)
+    if (['+', '-', '*', '/'].includes(value)) {
+      // Ignore if display shows Error
+      if (displayValue !== 'Error') {
+        applyState(handleOperatorInput(getCurrentState(), value));
+      }
+      return;
+    }
   };
 
   return <Calculator displayValue={displayValue} onButtonClick={handleButtonClick} />;
