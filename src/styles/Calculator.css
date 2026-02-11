@@ -1,0 +1,89 @@
+/* Calculator container */
+.calculator {
+  max-width: 320px;
+  background: #2c2c2c;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Display */
+.display {
+  background: #4a5a3a;
+  color: #1a1a1a;
+  font-family: monospace;
+  font-size: 2.5rem;
+  text-align: right;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  min-height: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.display--small {
+  font-size: 1.5rem;
+}
+
+/* Button grid */
+.button-panel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+/* Buttons */
+.btn {
+  font-size: 1.25rem;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #4a4a4a;
+  color: #ffffff;
+  font-family: inherit;
+  transition: background-color 0.1s;
+}
+
+.btn:hover {
+  background: #5a5a5a;
+}
+
+.btn:active {
+  background: #3a3a3a;
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn--operator {
+  background: #ff9500;
+  color: #fff;
+}
+
+.btn--operator:hover {
+  background: #ffaa33;
+}
+
+.btn--equals {
+  background: #ff9500;
+  color: #fff;
+}
+
+.btn--clear {
+  background: #a5a5a5;
+  color: #000;
+}
+
+.btn--clear:hover {
+  background: #b5b5b5;
+}
+
+.btn--wide {
+  /* Ready for future grid-column spanning */
+}
