@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Calculator from './components/Calculator';
 import { handleDigitInput, handleDecimalInput } from './logic/inputHandlers';
-import { handleOperatorInput, handleEqualsInput, handleClearInput, CalculatorState } from './logic/operationHandlers';
+import { handleOperatorInput, handleEqualsInput, handleClearInput } from './logic/operationHandlers';
+import type { CalculatorState } from './logic/operationHandlers';
 
 function App() {
   const [displayValue, setDisplayValue] = useState('0');

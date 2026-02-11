@@ -137,7 +137,7 @@ export function handleEqualsInput(state: CalculatorState): CalculatorState {
     displayValue: String(result),
     previousValue: null,
     operator: null,
-    waitingForOperand: false,
+    waitingForOperand: true,
   };
 }
 
