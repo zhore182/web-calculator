@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Calculator from './components/Calculator';
 import { handleDigitInput, handleDecimalInput } from './logic/inputHandlers';
 import { handleOperatorInput, handleEqualsInput, handleClearInput } from './logic/operationHandlers';
 import type { CalculatorState } from './logic/operationHandlers';
+import { useKeyboardInput } from './hooks/useKeyboardInput';
 
 function App() {
   const [displayValue, setDisplayValue] = useState('0');
@@ -24,7 +25,7 @@ function App() {
     setWaitingForOperand(newState.waitingForOperand);
   };
 
-  const handleButtonClick = (value: string) => {
+  const handleButtonClick = useCallback((value: string) => {
     // Handle clear input (always works, even from Error state)
     if (value === 'C') {
       applyState(handleClearInput());
@@ -72,7 +73,9 @@ function App() {
       }
       return;
     }
-  };
+  }, [displayValue, previousValue, operator, waitingForOperand]);
+
+  useKeyboardInput(handleButtonClick);
 
   return <Calculator displayValue={displayValue} onButtonClick={handleButtonClick} />;
 }
