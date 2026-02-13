@@ -9,6 +9,7 @@
 
 /* Display */
 .display {
+  position: relative;
   background: #4a5a3a;
   color: #1a1a1a;
   font-family: monospace;
@@ -25,6 +26,15 @@
 
 .display--small {
   font-size: 1.5rem;
+}
+
+.memory-indicator {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  font-size: 0.75rem;
+  color: #1a1a1a;
+  opacity: 0.7;
 }
 
 /* Button grid */
@@ -92,6 +102,16 @@
   /* Ready for future grid-column spanning */
 }
 
+.btn--memory {
+  background: #3a5a3a;
+  color: #d0d0d0;
+  font-size: 0.95rem;
+}
+
+.btn--memory:hover {
+  background: #4a6a4a;
+}
+
 /* Tablet breakpoint */
 @media (min-width: 481px) and (max-width: 768px) {
   .calculator {
@@ -125,6 +145,10 @@
     font-size: 1.1rem;
     padding: 14px 16px;
   }
+
+  .btn--memory {
+    font-size: 0.85rem;
+  }
 }
 
 /* Narrow phone breakpoint */
@@ -144,5 +168,9 @@
 
   .display {
     font-size: 1.75rem;
+  }
+
+  .btn--memory {
+    font-size: 0.75rem;
   }
 }

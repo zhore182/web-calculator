@@ -6,6 +6,7 @@ export interface ButtonPanelProps {
 
 export function ButtonPanel({ onButtonClick }: ButtonPanelProps) {
   const buttonLayout = [
+    ['MC', 'MR', 'M-', 'M+'],
     ['C',  '',   '',   '/'],
     ['7',  '8',  '9',  '*'],
     ['4',  '5',  '6',  '-'],
@@ -15,6 +16,7 @@ export function ButtonPanel({ onButtonClick }: ButtonPanelProps) {
 
   const getButtonClassName = (label: string): string => {
     if (label === '0') return 'btn--wide';
+    if (['MC','MR','M-','M+'].includes(label)) return 'btn--memory';
     if (['/','*','-','+'].includes(label)) return 'btn--operator';
     if (label === '=') return 'btn--equals';
     if (label === 'C') return 'btn--clear';
