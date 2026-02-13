@@ -112,6 +112,89 @@
   background: #4a6a4a;
 }
 
+/* History Panel */
+.history-panel {
+  margin-top: 12px;
+  border-top: 1px solid #3a3a3a;
+  padding-top: 8px;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.history-title {
+  color: #888;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.history-clear-btn {
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.history-clear-btn:hover {
+  background: rgba(255, 107, 107, 0.15);
+}
+
+.history-entries {
+  max-height: 160px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.history-empty {
+  color: #555;
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.history-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background: #383838;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: right;
+  width: 100%;
+  transition: background-color 0.1s;
+}
+
+.history-entry:hover {
+  background: #444;
+}
+
+.history-entry:active {
+  background: #333;
+}
+
+.history-expression {
+  color: #888;
+  font-size: 0.75rem;
+}
+
+.history-result {
+  color: #fff;
+  font-size: 1rem;
+  font-family: monospace;
+}
+
 /* Tablet breakpoint */
 @media (min-width: 481px) and (max-width: 768px) {
   .calculator {
@@ -149,6 +232,10 @@
   .btn--memory {
     font-size: 0.85rem;
   }
+
+  .history-entries {
+    max-height: 120px;
+  }
 }
 
 /* Narrow phone breakpoint */
@@ -172,5 +259,13 @@
 
   .btn--memory {
     font-size: 0.75rem;
+  }
+
+  .history-entries {
+    max-height: 100px;
+  }
+
+  .history-result {
+    font-size: 0.9rem;
   }
 }
