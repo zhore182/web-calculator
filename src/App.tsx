@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Calculator from './components/Calculator';
 import { handleDigitInput, handleDecimalInput } from './logic/inputHandlers';
 import { handleOperatorInput, handleEqualsInput, handleClearInput } from './logic/operationHandlers';
 import type { CalculatorState } from './logic/operationHandlers';
 import { useKeyboardInput } from './hooks/useKeyboardInput';
 import { memoryAdd, memorySubtract, memoryRecall, memoryClear } from './logic/memoryHandlers';
+import { createHistoryEntry, loadHistory, saveHistory, clearHistory } from './logic/historyHandlers';
+import type { HistoryEntry } from './logic/historyHandlers';
 
 function App() {
   const [displayValue, setDisplayValue] = useState('0');
@@ -12,8 +14,23 @@ function App() {
   const [operator, setOperator] = useState<string | null>(null);
   const [waitingForOperand, setWaitingForOperand] = useState(false);
   const [memoryValue, setMemoryValue] = useState(0);
+  const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
 
   const hasMemory = memoryValue !== 0;
+  const historyLoadedRef = useRef(false);
+
+  // Load history from localStorage on mount
+  useEffect(() => {
+    setHistoryEntries(loadHistory());
+    historyLoadedRef.current = true;
+  }, []);
+
+  // Save history to localStorage whenever it changes
+  useEffect(() => {
+    if (historyLoadedRef.current) {
+      saveHistory(historyEntries);
+    }
+  }, [historyEntries]);
 
   const getCurrentState = (): CalculatorState => ({
     displayValue,
@@ -28,6 +45,15 @@ function App() {
     setOperator(newState.operator);
     setWaitingForOperand(newState.waitingForOperand);
   };
+
+  const handleHistoryClear = useCallback(() => {
+    setHistoryEntries(clearHistory());
+  }, []);
+
+  const handleHistoryEntryClick = useCallback((entry: HistoryEntry) => {
+    setDisplayValue(entry.result);
+    setWaitingForOperand(true);
+  }, []);
 
   const handleButtonClick = useCallback((value: string) => {
     // Handle clear input (always works, even from Error state)
@@ -68,9 +94,23 @@ function App() {
 
     // Handle equals input
     if (value === '=') {
-      // Ignore if display shows Error
       if (displayValue !== 'Error') {
-        applyState(handleEqualsInput(getCurrentState()));
+        const currentState = getCurrentState();
+        // Only create history entry if there's a complete operation
+        if (currentState.previousValue !== null && currentState.operator !== null) {
+          const newState = handleEqualsInput(currentState);
+          // Only add to history if result is not Error
+          if (newState.displayValue !== 'Error') {
+            const entry = createHistoryEntry(
+              currentState.previousValue,
+              currentState.operator,
+              currentState.displayValue,
+              newState.displayValue
+            );
+            setHistoryEntries(prev => [entry, ...prev]);
+          }
+          applyState(newState);
+        }
       }
       return;
     }
@@ -87,7 +127,16 @@ function App() {
 
   useKeyboardInput(handleButtonClick);
 
-  return <Calculator displayValue={displayValue} onButtonClick={handleButtonClick} hasMemory={hasMemory} />;
+  return (
+    <Calculator
+      displayValue={displayValue}
+      onButtonClick={handleButtonClick}
+      hasMemory={hasMemory}
+      historyEntries={historyEntries}
+      onHistoryClear={handleHistoryClear}
+      onHistoryEntryClick={handleHistoryEntryClick}
+    />
+  );
 }
 
 export default App;
