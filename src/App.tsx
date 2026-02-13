@@ -4,12 +4,16 @@ import { handleDigitInput, handleDecimalInput } from './logic/inputHandlers';
 import { handleOperatorInput, handleEqualsInput, handleClearInput } from './logic/operationHandlers';
 import type { CalculatorState } from './logic/operationHandlers';
 import { useKeyboardInput } from './hooks/useKeyboardInput';
+import { memoryAdd, memorySubtract, memoryRecall, memoryClear } from './logic/memoryHandlers';
 
 function App() {
   const [displayValue, setDisplayValue] = useState('0');
   const [previousValue, setPreviousValue] = useState<string | null>(null);
   const [operator, setOperator] = useState<string | null>(null);
   const [waitingForOperand, setWaitingForOperand] = useState(false);
+  const [memoryValue, setMemoryValue] = useState(0);
+
+  const hasMemory = memoryValue !== 0;
 
   const getCurrentState = (): CalculatorState => ({
     displayValue,
@@ -31,6 +35,12 @@ function App() {
       applyState(handleClearInput());
       return;
     }
+
+    // Handle memory operations
+    if (value === 'MC') { setMemoryValue(memoryClear()); return; }
+    if (value === 'MR') { setDisplayValue(memoryRecall(memoryValue)); setWaitingForOperand(true); return; }
+    if (value === 'M+') { setMemoryValue(memoryAdd(memoryValue, displayValue)); setWaitingForOperand(true); return; }
+    if (value === 'M-') { setMemoryValue(memorySubtract(memoryValue, displayValue)); setWaitingForOperand(true); return; }
 
     // Handle digit input (0-9)
     if (/^[0-9]$/.test(value)) {
@@ -73,11 +83,11 @@ function App() {
       }
       return;
     }
-  }, [displayValue, previousValue, operator, waitingForOperand]);
+  }, [displayValue, previousValue, operator, waitingForOperand, memoryValue]);
 
   useKeyboardInput(handleButtonClick);
 
-  return <Calculator displayValue={displayValue} onButtonClick={handleButtonClick} />;
+  return <Calculator displayValue={displayValue} onButtonClick={handleButtonClick} hasMemory={hasMemory} />;
 }
 
 export default App;
