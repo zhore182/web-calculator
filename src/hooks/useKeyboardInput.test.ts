@@ -3,10 +3,10 @@ import { renderHook } from '@testing-library/react';
 import { useKeyboardInput } from './useKeyboardInput';
 
 describe('useKeyboardInput', () => {
-  let onButtonClick: ReturnType<typeof vi.fn>;
+  let onButtonClick: ReturnType<typeof vi.fn<(value: string) => void>>;
 
   beforeEach(() => {
-    onButtonClick = vi.fn();
+    onButtonClick = vi.fn<(value: string) => void>();
   });
 
   afterEach(() => {
