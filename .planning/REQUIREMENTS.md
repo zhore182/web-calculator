@@ -89,13 +89,43 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (To be populated during roadmap creation) | | |
+| EXPR-01 | Phase 1 | Pending |
+| EXPR-02 | Phase 1 | Pending |
+| EXPR-03 | Phase 1 | Pending |
+| EXPR-05 | Phase 1 | Pending |
+| EXPR-06 | Phase 1 | Pending |
+| MODE-01 | Phase 1 | Pending |
+| SCI-01 | Phase 2 | Pending |
+| SCI-02 | Phase 2 | Pending |
+| SCI-03 | Phase 2 | Pending |
+| SCI-04 | Phase 2 | Pending |
+| SCI-05 | Phase 2 | Pending |
+| SCI-06 | Phase 2 | Pending |
+| SCI-07 | Phase 2 | Pending |
+| SCI-08 | Phase 2 | Pending |
+| SCI-09 | Phase 2 | Pending |
+| SCI-10 | Phase 2 | Pending |
+| MODE-02 | Phase 2 | Pending |
+| UI-01 | Phase 3 | Pending |
+| MODE-03 | Phase 3 | Pending |
+| GRPH-01 | Phase 4 | Pending |
+| GRPH-02 | Phase 4 | Pending |
+| GRPH-05 | Phase 4 | Pending |
+| GRPH-06 | Phase 4 | Pending |
+| GRPH-03 | Phase 5 | Pending |
+| GRPH-04 | Phase 5 | Pending |
+| GRPH-07 | Phase 5 | Pending |
+| GRPH-08 | Phase 5 | Pending |
+| EXPR-04 | Phase 6 | Pending |
+| UI-02 | Phase 6 | Pending |
+| UI-03 | Phase 6 | Pending |
+| UI-04 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 27 total
-- Mapped to phases: 0
-- Unmapped: 27
+- v1 requirements: 31 total
+- Mapped to phases: 31
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-14*
-*Last updated: 2026-02-14 after initial definition*
+*Last updated: 2026-02-15 after roadmap creation*
