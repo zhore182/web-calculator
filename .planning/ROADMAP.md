@@ -31,10 +31,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can see the full expression in the display before pressing equals
   4. User can backspace to delete characters within an expression
   5. User can toggle between simple mode (left-to-right) and expression mode (PEMDAS) without losing calculator state
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] TBD (populated during planning)
+- [ ] 01-01-PLAN.md — Expression parser engine (TDD: mathjs integration, PEMDAS evaluation, error handling)
+- [ ] 01-02-PLAN.md — Split display UI and mode toggle (two-line display, Simple/Expression mode switch, expression state)
+- [ ] 01-03-PLAN.md — Cursor management and expression editing (click-to-position, arrow keys, auto-close parens, final integration)
 
 ### Phase 2: Scientific Functions
 **Goal**: Users can perform scientific calculations including trigonometric, logarithmic, and exponential functions
@@ -115,7 +117,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Expression Parser Foundation | 0/TBD | Not started | - |
+| 1. Expression Parser Foundation | 0/3 | Planned | - |
 | 2. Scientific Functions | 0/TBD | Not started | - |
 | 3. Scientific UI Panel | 0/TBD | Not started | - |
 | 4. Graphing Core | 0/TBD | Not started | - |
