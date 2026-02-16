@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 ## Current Position
 
 Phase: 1 of 6 (Expression Parser Foundation)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-02-15 — Roadmap created with 6 phases
+Plan: 1 of TBD in current phase
+Status: In progress
+Last activity: 2026-02-16 — Completed plan 01-01 (PEMDAS expression parser)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] ~17% (1 plan complete in Phase 1)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: N/A
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 3 minutes
+- Total execution time: 0.05 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01    | 1     | 3min  | 3min     |
 
 **Recent Trend:**
-- Last 5 plans: N/A
-- Trend: N/A
+- Last 5 plans: 01-01 (3min)
+- Trend: First plan completed
 
 *Updated after each plan completion*
 
@@ -45,6 +45,9 @@ Recent decisions affecting current work:
 - Toggle panel for scientific buttons — Keeps basic calculator clean; users who don't need science mode aren't overwhelmed
 - Both simple + expression input modes — Preserves familiar basic experience while enabling full expression capability
 - DEG/RAD only (no gradians) — Covers 99% of use cases, simpler UI
+- **[01-01]** Use mathjs library for expression evaluation — Provides battle-tested PEMDAS implementation, supports implicit multiplication
+- **[01-01]** Use toPrecision(12) + parseFloat for number formatting — Addresses floating-point precision (0.1+0.2=0.3), establishes single precision strategy
+- **[01-01]** Changed error test from "2++3" to "2**3" — Mathjs correctly interprets "2++3" as valid (unary plus), needed truly invalid syntax
 
 ### Pending Todos
 
@@ -58,7 +61,7 @@ None yet.
 - DEG/RAD mode: Must flow as evaluation context to all functions, not just UI state
 
 **Research findings to address in Phase 2 planning:**
-- Implicit multiplication policy: Test if mathjs supports "2π" or requires "2*π" (affects tokenizer design)
+- ~~Implicit multiplication policy: Test if mathjs supports "2π" or requires "2*π" (affects tokenizer design)~~ — RESOLVED: mathjs supports implicit multiplication natively (tested: "2(3)" works)
 - History serialization: Design schema for storing expressions with mode metadata
 
 **Research findings to address in Phase 4 planning:**
@@ -67,6 +70,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-15
-Stopped at: Roadmap creation complete, ready to begin Phase 1 planning
-Resume file: None
+Last session: 2026-02-16
+Stopped at: Completed 01-01-PLAN.md — PEMDAS expression parser with mathjs
+Resume file: .planning/phases/01-expression-parser-foundation/01-01-SUMMARY.md
