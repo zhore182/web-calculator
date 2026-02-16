@@ -9,6 +9,7 @@ import { createHistoryEntry, loadHistory, saveHistory, clearHistory } from './lo
 import type { HistoryEntry } from './logic/historyHandlers';
 import { evaluateExpression } from './logic/expressionParser';
 import type { ExpressionMode } from './logic/expressionParser';
+import { insertAtCursor, deleteAtCursor, moveCursor, insertParenthesis } from './logic/cursorHelpers';
 
 function App() {
   const [displayValue, setDisplayValue] = useState('0');
@@ -105,9 +106,9 @@ function App() {
     if (expressionMode === 'expression') {
       // Handle digit input (0-9)
       if (/^[0-9]$/.test(value)) {
-        const newExpression = expression.slice(0, cursorPosition) + value + expression.slice(cursorPosition);
+        const { expression: newExpression, cursorPosition: newCursor } = insertAtCursor(expression, cursorPosition, value);
         setExpression(newExpression);
-        setCursorPosition(cursorPosition + 1);
+        setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
         const result = evaluateExpression(newExpression);
@@ -119,9 +120,9 @@ function App() {
 
       // Handle decimal point input
       if (value === '.') {
-        const newExpression = expression.slice(0, cursorPosition) + '.' + expression.slice(cursorPosition);
+        const { expression: newExpression, cursorPosition: newCursor } = insertAtCursor(expression, cursorPosition, '.');
         setExpression(newExpression);
-        setCursorPosition(cursorPosition + 1);
+        setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
         const result = evaluateExpression(newExpression);
@@ -133,9 +134,9 @@ function App() {
 
       // Handle operator input (+, -, *, /)
       if (['+', '-', '*', '/'].includes(value)) {
-        const newExpression = expression.slice(0, cursorPosition) + value + expression.slice(cursorPosition);
+        const { expression: newExpression, cursorPosition: newCursor } = insertAtCursor(expression, cursorPosition, value);
         setExpression(newExpression);
-        setCursorPosition(cursorPosition + 1);
+        setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
         const result = evaluateExpression(newExpression);
@@ -147,11 +148,11 @@ function App() {
         return;
       }
 
-      // Handle parentheses
-      if (['(', ')'].includes(value)) {
-        const newExpression = expression.slice(0, cursorPosition) + value + expression.slice(cursorPosition);
+      // Handle opening parenthesis with auto-close
+      if (value === '(') {
+        const { expression: newExpression, cursorPosition: newCursor } = insertParenthesis(expression, cursorPosition, 'open');
         setExpression(newExpression);
-        setCursorPosition(cursorPosition + 1);
+        setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
         const result = evaluateExpression(newExpression);
@@ -160,6 +161,51 @@ function App() {
         } else {
           setPreviewResult(''); // Clear preview if expression is incomplete
         }
+        return;
+      }
+
+      // Handle closing parenthesis
+      if (value === ')') {
+        const { expression: newExpression, cursorPosition: newCursor } = insertAtCursor(expression, cursorPosition, ')');
+        setExpression(newExpression);
+        setCursorPosition(newCursor);
+
+        // Try to evaluate and show preview
+        const result = evaluateExpression(newExpression);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        } else {
+          setPreviewResult(''); // Clear preview if expression is incomplete
+        }
+        return;
+      }
+
+      // Handle backspace
+      if (value === 'Backspace') {
+        const { expression: newExpression, cursorPosition: newCursor } = deleteAtCursor(expression, cursorPosition);
+        setExpression(newExpression);
+        setCursorPosition(newCursor);
+
+        // Try to evaluate and show preview
+        const result = evaluateExpression(newExpression);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        } else {
+          setPreviewResult(''); // Clear preview if expression is incomplete
+        }
+        return;
+      }
+
+      // Handle arrow keys for cursor movement
+      if (value === 'ArrowLeft') {
+        const newCursor = moveCursor(cursorPosition, 'left', expression.length);
+        setCursorPosition(newCursor);
+        return;
+      }
+
+      if (value === 'ArrowRight') {
+        const newCursor = moveCursor(cursorPosition, 'right', expression.length);
+        setCursorPosition(newCursor);
         return;
       }
 
@@ -177,6 +223,7 @@ function App() {
           setCursorPosition(0);
           setPreviewResult('');
         } else if (result.status === 'error') {
+          // Per user decision: on error, show "Syntax Error" in result line, keep expression visible for correction
           setPreviewResult('Syntax Error');
         }
         return;

@@ -40,6 +40,14 @@ export function useKeyboardInput(onButtonClick: (value: string) => void) {
         'Escape': 'C',
         // Decimal
         '.': '.',
+        // Arrow keys for cursor movement (expression mode)
+        'ArrowLeft': 'ArrowLeft',
+        'ArrowRight': 'ArrowRight',
+        // Backspace for deletion
+        'Backspace': 'Backspace',
+        // Parentheses
+        '(': '(',
+        ')': ')',
       };
 
       // Look up key in map and call handler if found
