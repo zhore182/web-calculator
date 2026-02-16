@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 ## Current Position
 
 Phase: 1 of 6 (Expression Parser Foundation)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-16 — Completed plan 01-02 (Split display and mode toggle)
+Plan: 3 of 3 in current phase
+Status: Complete
+Last activity: 2026-02-16 — Completed plan 01-03 (Expression editing with cursor management)
 
-Progress: [██░░░░░░░░] ~33% (2 plans complete in Phase 1)
+Progress: [███░░░░░░░] ~50% (Phase 1 complete - 3/3 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 3 minutes
-- Total execution time: 0.1 hours
+- Total plans completed: 3
+- Average duration: 4.7 minutes
+- Total execution time: 0.2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01    | 2     | 6min  | 3min     |
+| 01    | 3     | 14min | 4.7min   |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3min), 01-02 (3min)
-- Trend: Consistent velocity
+- Last 5 plans: 01-01 (3min), 01-02 (3min), 01-03 (8min)
+- Trend: Increasing complexity (more advanced features)
 
 *Updated after each plan completion*
 
@@ -52,6 +52,9 @@ Recent decisions affecting current work:
 - **[01-02]** Live preview only shows when expression evaluates successfully — Showing partial errors or incomplete results would be confusing
 - **[01-02]** Math symbols (× ÷) displayed instead of raw operators (* /) — Cleaner visual presentation matches traditional calculator displays
 - **[01-02]** Expression mode uses separate input handling path — Clear separation of concerns, no risk of simple mode regression
+- **[01-03]** Auto-close parentheses on '(' input — Typing '(' inserts '()' with cursor between, improves UX and reduces syntax errors
+- **[01-03]** Preserve expression on syntax error — After equals with invalid/incomplete expression, show 'Syntax Error' in result but keep expression visible for correction
+- **[01-03]** Separate cursor logic from UI — Pure functions in cursorHelpers.ts are testable independently without React coupling
 
 ### Pending Todos
 
@@ -75,5 +78,14 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-16
-Stopped at: Completed 01-02-PLAN.md — Split display and mode toggle with expression state
-Resume file: .planning/phases/01-expression-parser-foundation/01-02-SUMMARY.md
+Stopped at: Completed 01-03-PLAN.md — Expression editing with cursor management (Phase 1 COMPLETE)
+Resume file: .planning/phases/01-expression-parser-foundation/01-03-SUMMARY.md
+
+## Phase Completion Status
+
+**Phase 01: Expression Parser Foundation** - ✓ COMPLETE
+- 01-01: PEMDAS expression parser ✓
+- 01-02: Split display and mode toggle ✓
+- 01-03: Expression editing with cursor management ✓
+
+**Next:** Phase 02 - Scientific Functions Panel
