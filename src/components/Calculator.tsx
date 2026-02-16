@@ -1,7 +1,9 @@
 import { Display } from './Display';
 import { ButtonPanel } from './ButtonPanel';
 import { HistoryPanel } from './HistoryPanel';
+import { ModeToggle } from './ModeToggle';
 import type { HistoryEntry } from '../logic/historyHandlers';
+import type { ExpressionMode } from '../logic/expressionParser';
 import '../styles/Calculator.css';
 
 export interface CalculatorProps {
@@ -11,6 +13,11 @@ export interface CalculatorProps {
   historyEntries: HistoryEntry[];
   onHistoryClear: () => void;
   onHistoryEntryClick: (entry: HistoryEntry) => void;
+  expressionMode: ExpressionMode;
+  expression: string;
+  cursorPosition: number;
+  previewResult: string;
+  onModeChange: (mode: ExpressionMode) => void;
 }
 
 export default function Calculator({
@@ -20,10 +27,28 @@ export default function Calculator({
   historyEntries,
   onHistoryClear,
   onHistoryEntryClick,
+  expressionMode,
+  expression,
+  cursorPosition,
+  previewResult,
+  onModeChange,
 }: CalculatorProps) {
+  // In expression mode: Display shows expression on top line, preview/result on bottom
+  // In simple mode: Display shows only displayValue on bottom line
+  const displayResultValue = expressionMode === 'expression' && previewResult
+    ? previewResult
+    : displayValue;
+
   return (
     <div className="calculator">
-      <Display value={displayValue} hasMemory={hasMemory} />
+      <ModeToggle mode={expressionMode} onModeChange={onModeChange} />
+      <Display
+        value={displayResultValue}
+        hasMemory={hasMemory}
+        expression={expression}
+        expressionMode={expressionMode === 'expression'}
+        cursorPosition={cursorPosition}
+      />
       <ButtonPanel onButtonClick={onButtonClick} />
       <HistoryPanel
         entries={historyEntries}

@@ -7,6 +7,8 @@ import { useKeyboardInput } from './hooks/useKeyboardInput';
 import { memoryAdd, memorySubtract, memoryRecall, memoryClear } from './logic/memoryHandlers';
 import { createHistoryEntry, loadHistory, saveHistory, clearHistory } from './logic/historyHandlers';
 import type { HistoryEntry } from './logic/historyHandlers';
+import { evaluateExpression } from './logic/expressionParser';
+import type { ExpressionMode } from './logic/expressionParser';
 
 function App() {
   const [displayValue, setDisplayValue] = useState('0');
@@ -15,6 +17,12 @@ function App() {
   const [waitingForOperand, setWaitingForOperand] = useState(false);
   const [memoryValue, setMemoryValue] = useState(0);
   const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
+
+  // Expression mode state
+  const [expressionMode, setExpressionMode] = useState<ExpressionMode>('simple');
+  const [expression, setExpression] = useState('');        // The expression string being built
+  const [cursorPosition, setCursorPosition] = useState(0); // Cursor position within expression
+  const [previewResult, setPreviewResult] = useState('');   // Live result preview
 
   const hasMemory = memoryValue !== 0;
   const historyLoadedRef = useRef(false);
@@ -55,19 +63,129 @@ function App() {
     setWaitingForOperand(true);
   }, []);
 
+  const handleModeChange = useCallback((mode: ExpressionMode) => {
+    setExpressionMode(mode);
+    // Per user decision: preserve current value when switching modes
+    // When switching TO expression mode: expression starts empty, display value preserved as result
+    // When switching FROM expression mode: current result becomes display value
+    if (mode === 'expression') {
+      setExpression('');
+      setCursorPosition(0);
+      setPreviewResult(displayValue);
+    }
+    // Simple mode: displayValue is already the current value, just clear expression state
+    if (mode === 'simple') {
+      setExpression('');
+      setCursorPosition(0);
+      setPreviewResult('');
+    }
+  }, [displayValue]);
+
   const handleButtonClick = useCallback((value: string) => {
     // Handle clear input (always works, even from Error state)
     if (value === 'C') {
-      applyState(handleClearInput());
+      if (expressionMode === 'expression') {
+        setExpression('');
+        setCursorPosition(0);
+        setPreviewResult('');
+        setDisplayValue('0');
+      } else {
+        applyState(handleClearInput());
+      }
       return;
     }
 
-    // Handle memory operations
+    // Handle memory operations (both modes)
     if (value === 'MC') { setMemoryValue(memoryClear()); return; }
     if (value === 'MR') { setDisplayValue(memoryRecall(memoryValue)); setWaitingForOperand(true); return; }
     if (value === 'M+') { setMemoryValue(memoryAdd(memoryValue, displayValue)); setWaitingForOperand(true); return; }
     if (value === 'M-') { setMemoryValue(memorySubtract(memoryValue, displayValue)); setWaitingForOperand(true); return; }
 
+    // EXPRESSION MODE input handling
+    if (expressionMode === 'expression') {
+      // Handle digit input (0-9)
+      if (/^[0-9]$/.test(value)) {
+        const newExpression = expression.slice(0, cursorPosition) + value + expression.slice(cursorPosition);
+        setExpression(newExpression);
+        setCursorPosition(cursorPosition + 1);
+
+        // Try to evaluate and show preview
+        const result = evaluateExpression(newExpression);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        }
+        return;
+      }
+
+      // Handle decimal point input
+      if (value === '.') {
+        const newExpression = expression.slice(0, cursorPosition) + '.' + expression.slice(cursorPosition);
+        setExpression(newExpression);
+        setCursorPosition(cursorPosition + 1);
+
+        // Try to evaluate and show preview
+        const result = evaluateExpression(newExpression);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        }
+        return;
+      }
+
+      // Handle operator input (+, -, *, /)
+      if (['+', '-', '*', '/'].includes(value)) {
+        const newExpression = expression.slice(0, cursorPosition) + value + expression.slice(cursorPosition);
+        setExpression(newExpression);
+        setCursorPosition(cursorPosition + 1);
+
+        // Try to evaluate and show preview
+        const result = evaluateExpression(newExpression);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        } else {
+          setPreviewResult(''); // Clear preview if expression is incomplete
+        }
+        return;
+      }
+
+      // Handle parentheses
+      if (['(', ')'].includes(value)) {
+        const newExpression = expression.slice(0, cursorPosition) + value + expression.slice(cursorPosition);
+        setExpression(newExpression);
+        setCursorPosition(cursorPosition + 1);
+
+        // Try to evaluate and show preview
+        const result = evaluateExpression(newExpression);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        } else {
+          setPreviewResult(''); // Clear preview if expression is incomplete
+        }
+        return;
+      }
+
+      // Handle equals input in expression mode
+      if (value === '=') {
+        const result = evaluateExpression(expression);
+        if (result.status === 'success' && result.display) {
+          // Create history entry
+          const entry = createHistoryEntry(expression, '=', '', result.display);
+          setHistoryEntries(prev => [entry, ...prev]);
+
+          // Set result as display value and clear expression
+          setDisplayValue(result.display);
+          setExpression('');
+          setCursorPosition(0);
+          setPreviewResult('');
+        } else if (result.status === 'error') {
+          setPreviewResult('Syntax Error');
+        }
+        return;
+      }
+
+      return; // End expression mode handling
+    }
+
+    // SIMPLE MODE input handling (unchanged from original)
     // Handle digit input (0-9)
     if (/^[0-9]$/.test(value)) {
       // If waiting for operand, start a new number
@@ -123,7 +241,7 @@ function App() {
       }
       return;
     }
-  }, [displayValue, previousValue, operator, waitingForOperand, memoryValue]);
+  }, [displayValue, previousValue, operator, waitingForOperand, memoryValue, expressionMode, expression, cursorPosition]);
 
   useKeyboardInput(handleButtonClick);
 
@@ -135,6 +253,11 @@ function App() {
       historyEntries={historyEntries}
       onHistoryClear={handleHistoryClear}
       onHistoryEntryClick={handleHistoryEntryClick}
+      expressionMode={expressionMode}
+      expression={expression}
+      cursorPosition={cursorPosition}
+      previewResult={previewResult}
+      onModeChange={handleModeChange}
     />
   );
 }
