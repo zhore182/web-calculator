@@ -82,6 +82,10 @@ function App() {
     }
   }, [displayValue]);
 
+  const handleExpressionClick = useCallback((position: number) => {
+    setCursorPosition(position);
+  }, []);
+
   const handleButtonClick = useCallback((value: string) => {
     // Handle clear input (always works, even from Error state)
     if (value === 'C') {
@@ -305,6 +309,7 @@ function App() {
       cursorPosition={cursorPosition}
       previewResult={previewResult}
       onModeChange={handleModeChange}
+      onExpressionClick={handleExpressionClick}
     />
   );
 }

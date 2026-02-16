@@ -83,6 +83,7 @@
   text-align: right;
   min-height: 24px;
   margin-bottom: 4px;
+  cursor: text; /* Show text cursor on hover */
   /* Hide scrollbar but keep functionality */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
@@ -90,6 +91,22 @@
 
 .display__expression::-webkit-scrollbar {
   display: none; /* Chrome/Safari */
+}
+
+/* Blinking cursor in expression display */
+.display__cursor {
+  display: inline-block;
+  width: 1px;
+  height: 1.2em;
+  background-color: #aaa;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin: 0 -0.5px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* Result line (bottom) */
@@ -294,6 +311,10 @@
     margin-bottom: 2px;
   }
 
+  .display__cursor {
+    height: 1em;
+  }
+
   .display__result {
     font-size: 2rem;
   }
@@ -343,6 +364,10 @@
   .display__expression {
     font-size: 0.75rem;
     min-height: 18px;
+  }
+
+  .display__cursor {
+    height: 0.9em;
   }
 
   .display__result {

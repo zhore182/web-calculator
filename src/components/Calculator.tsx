@@ -18,6 +18,7 @@ export interface CalculatorProps {
   cursorPosition: number;
   previewResult: string;
   onModeChange: (mode: ExpressionMode) => void;
+  onExpressionClick?: (position: number) => void;
 }
 
 export default function Calculator({
@@ -32,6 +33,7 @@ export default function Calculator({
   cursorPosition,
   previewResult,
   onModeChange,
+  onExpressionClick,
 }: CalculatorProps) {
   // In expression mode: Display shows expression on top line, preview/result on bottom
   // In simple mode: Display shows only displayValue on bottom line
@@ -48,6 +50,7 @@ export default function Calculator({
         expression={expression}
         expressionMode={expressionMode === 'expression'}
         cursorPosition={cursorPosition}
+        onExpressionClick={onExpressionClick}
       />
       <ButtonPanel onButtonClick={onButtonClick} />
       <HistoryPanel
