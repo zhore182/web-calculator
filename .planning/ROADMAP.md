@@ -120,7 +120,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Expression Parser Foundation | 3/3 | ✓ Complete | 2026-02-15 |
-| 2. Scientific Functions | 0/TBD | Not started | - |
+| 2. Scientific Functions | 0/3 | Planned | - |
 | 3. Scientific UI Panel | 0/TBD | Not started | - |
 | 4. Graphing Core | 0/TBD | Not started | - |
 | 5. Graphing Interactions | 0/TBD | Not started | - |
