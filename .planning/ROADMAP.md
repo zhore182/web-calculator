@@ -12,7 +12,7 @@ Transform the existing basic calculator into a scientific calculator with graphi
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Expression Parser Foundation** - Replace left-to-right evaluation with PEMDAS-capable expression engine
+- [x] **Phase 1: Expression Parser Foundation** - Replace left-to-right evaluation with PEMDAS-capable expression engine
 - [ ] **Phase 2: Scientific Functions** - Add trigonometric, logarithmic, and exponential functions with angle mode support
 - [ ] **Phase 3: Scientific UI Panel** - Create toggle panel for scientific buttons without cluttering basic calculator
 - [ ] **Phase 4: Graphing Core** - Build basic function plotting with y=f(x) input and Canvas rendering
@@ -34,9 +34,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Expression parser engine (TDD: mathjs integration, PEMDAS evaluation, error handling)
-- [ ] 01-02-PLAN.md — Split display UI and mode toggle (two-line display, Simple/Expression mode switch, expression state)
-- [ ] 01-03-PLAN.md — Cursor management and expression editing (click-to-position, arrow keys, auto-close parens, final integration)
+- [x] 01-01-PLAN.md — Expression parser engine (TDD: mathjs integration, PEMDAS evaluation, error handling)
+- [x] 01-02-PLAN.md — Split display UI and mode toggle (two-line display, Simple/Expression mode switch, expression state)
+- [x] 01-03-PLAN.md — Cursor management and expression editing (click-to-position, arrow keys, auto-close parens, final integration)
 
 ### Phase 2: Scientific Functions
 **Goal**: Users can perform scientific calculations including trigonometric, logarithmic, and exponential functions
@@ -117,7 +117,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Expression Parser Foundation | 0/3 | Planned | - |
+| 1. Expression Parser Foundation | 3/3 | ✓ Complete | 2026-02-15 |
 | 2. Scientific Functions | 0/TBD | Not started | - |
 | 3. Scientific UI Panel | 0/TBD | Not started | - |
 | 4. Graphing Core | 0/TBD | Not started | - |
