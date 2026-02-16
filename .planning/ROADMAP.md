@@ -48,10 +48,12 @@ Plans:
   3. User can compute logarithms (log, ln) and exponentiation (x^2, x^3, x^y, sqrt)
   4. User can insert constants (pi, e) and compute factorial, absolute value, and percentage
   5. User receives clear error messages for invalid operations (like sqrt of negative number)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] TBD (populated during planning)
+- [ ] 02-01-PLAN.md — Scientific evaluation engine (TDD: angle mode, domain errors, all scientific functions)
+- [ ] 02-02-PLAN.md — Function input with smart auto-wrap, constants, and DEG/RAD badge
+- [ ] 02-03-PLAN.md — Keyboard autocomplete popup for function names
 
 ### Phase 3: Scientific UI Panel
 **Goal**: Scientific functions are accessible through a clean toggle panel that doesn't clutter the basic calculator interface
