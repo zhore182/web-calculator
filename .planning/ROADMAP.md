@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Expression Parser Foundation** - Replace left-to-right evaluation with PEMDAS-capable expression engine
 - [ ] **Phase 2: Scientific Functions** - Add trigonometric, logarithmic, and exponential functions with angle mode support
-- [ ] **Phase 3: Scientific UI Panel** - Create toggle panel for scientific buttons without cluttering basic calculator
+- [x] **Phase 3: Scientific UI Panel** - Create toggle panel for scientific buttons without cluttering basic calculator
 - [ ] **Phase 4: Graphing Core** - Build basic function plotting with y=f(x) input and Canvas rendering
 - [ ] **Phase 5: Graphing Interactions** - Add zoom, pan, trace, and function table features to graphs
 - [ ] **Phase 6: UX Polish** - Enhance user experience with scientific notation, better error handling, and keyboard shortcuts
@@ -67,7 +67,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 03-01-PLAN.md — Scientific toggle panel with function buttons, slide animation, and responsive layout
+- [x] 03-01-PLAN.md — Scientific toggle panel with function buttons, slide animation, and responsive layout
 
 ### Phase 4: Graphing Core
 **Goal**: Users can plot mathematical functions on a 2D graph inline with the calculator
@@ -121,7 +121,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Expression Parser Foundation | 3/3 | ✓ Complete | 2026-02-15 |
 | 2. Scientific Functions | 3/3 | ✓ Complete | 2026-02-20 |
-| 3. Scientific UI Panel | 0/TBD | Not started | - |
+| 3. Scientific UI Panel | 1/1 | ✓ Complete | 2026-02-20 |
 | 4. Graphing Core | 0/TBD | Not started | - |
 | 5. Graphing Interactions | 0/TBD | Not started | - |
 | 6. UX Polish | 0/TBD | Not started | - |

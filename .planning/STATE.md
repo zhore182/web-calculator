@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** The calculator must correctly evaluate mathematical expressions — from simple arithmetic to scientific functions — and display results clearly.
-**Current focus:** Phase 2 - Scientific Functions Panel
+**Current focus:** Phase 3 - Scientific UI Panel
 
 ## Current Position
 
-Phase: 2 of 6 (Scientific Functions Panel)
-Plan: 3 of 3 in current phase
+Phase: 3 of 6 (Scientific UI Panel)
+Plan: 1 of 1 in current phase
 Status: Complete
-Last activity: 2026-02-20 — Completed plan 02-03 (Keyboard autocomplete for scientific functions)
+Last activity: 2026-02-20 — Completed plan 03-01 (Scientific toggle panel with function buttons)
 
-Progress: [██████░░░░] ~100% (Phase 2: 3/3 plans complete)
+Progress: [████████░░] ~50% (Phase 3: 1/1 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 4.5 minutes
-- Total execution time: 0.45 hours
+- Total plans completed: 7
+- Average duration: 4.7 minutes
+- Total execution time: 0.55 hours
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [██████░░░░] ~100% (Phase 2: 3/3 plans complete)
 |-------|-------|-------|----------|
 | 01    | 3     | 14min | 4.7min   |
 | 02    | 3     | 15min | 5.0min   |
+| 03    | 1     | 12min | 12.0min  |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (8min), 02-01 (3min), 02-02 (4min), 02-03 (8min)
-- Trend: Efficient execution with comprehensive test coverage
+- Last 5 plans: 02-01 (3min), 02-02 (4min), 02-03 (8min), 03-01 (12min)
+- Trend: Phase 3 longer due to human verification checkpoint and responsive fix
 
 *Updated after each plan completion*
 
@@ -67,6 +68,10 @@ Recent decisions affecting current work:
 - **[02-03]** Letter input inserts characters into expression while building autocomplete buffer — Users see what they're typing immediately, autocomplete acts as suggestion layer
 - **[02-03]** Enter key maps to 'Enter' instead of '=' in keyboard hook — Allows autocomplete to intercept Enter for selection before equals handling
 - **[02-03]** Autocomplete keyboard navigation takes priority over normal cursor movement — When autocomplete is visible, arrows should navigate list not cursor
+- **[03-01]** Scientific panel slides in from left on desktop — Maintains visual hierarchy with basic buttons as primary
+- **[03-01]** Panel stacks below basic buttons on tablet/mobile — User-approved placement, doesn't push main calculator down
+- **[03-01]** Scientific buttons only functional in expression mode — Simple mode ignores them (no-op, no guard needed)
+- **[03-01]** Width transition for desktop, max-height transition for mobile — Different animation axes for horizontal vs vertical layout
 
 ### Pending Todos
 
@@ -90,8 +95,8 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 02-03-PLAN.md — Keyboard autocomplete for scientific functions
-Resume file: .planning/phases/02-scientific-functions/02-03-SUMMARY.md
+Stopped at: Completed 03-01-PLAN.md — Scientific toggle panel with function buttons
+Resume file: .planning/phases/03-scientific-ui-panel/03-01-SUMMARY.md
 
 ## Phase Completion Status
 
@@ -105,4 +110,7 @@ Resume file: .planning/phases/02-scientific-functions/02-03-SUMMARY.md
 - 02-02: Function input with smart auto-wrap and angle mode UI ✓
 - 02-03: Keyboard autocomplete for scientific functions ✓
 
-**Next:** Phase 03 (to be planned)
+**Phase 03: Scientific UI Panel** - ✓ COMPLETE
+- 03-01: Scientific toggle panel with function buttons ✓
+
+**Next:** Phase 04 (to be planned)
