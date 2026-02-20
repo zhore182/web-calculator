@@ -411,6 +411,30 @@
   .calculator {
     max-width: 360px;
   }
+
+  /* Stack panels vertically on tablet too — not enough width for side-by-side */
+  .calculator__panels {
+    flex-direction: column-reverse;
+  }
+
+  .scientific-panel {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    opacity: 0;
+    max-height: 0;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+  }
+
+  .scientific-panel--visible {
+    width: auto;
+    max-height: 300px;
+    opacity: 1;
+  }
+
+  .calculator--sci-open {
+    max-width: 360px;
+  }
 }
 
 /* Phone breakpoint */
@@ -462,8 +486,19 @@
     flex-direction: column-reverse;
   }
 
+  .scientific-panel {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    opacity: 0;
+    max-height: 0;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+  }
+
   .scientific-panel--visible {
-    width: 100%;
+    width: auto;
+    max-height: 300px;
+    opacity: 1;
   }
 
   .button-panel {
