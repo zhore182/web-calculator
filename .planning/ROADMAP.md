@@ -79,10 +79,11 @@ Plans:
   3. Graph displays labeled axes with tick marks and grid lines
   4. User can clear the graph and enter a new function expression
   5. Graph respects current angle mode (DEG/RAD) for trigonometric functions
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] TBD (populated during planning)
+- [ ] 04-01-PLAN.md — Graph rendering engine (Canvas coordinate system, axes, grid, labels, function curve plotting)
+- [ ] 04-02-PLAN.md — Graph UI integration (input field, plot/clear controls, angle mode pass-through, layout)
 
 ### Phase 5: Graphing Interactions
 **Goal**: Users can interact with graphs through zoom, pan, trace, and function table features
@@ -122,6 +123,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Expression Parser Foundation | 3/3 | ✓ Complete | 2026-02-15 |
 | 2. Scientific Functions | 3/3 | ✓ Complete | 2026-02-20 |
 | 3. Scientific UI Panel | 1/1 | ✓ Complete | 2026-02-20 |
-| 4. Graphing Core | 0/TBD | Not started | - |
+| 4. Graphing Core | 0/2 | Planned | - |
 | 5. Graphing Interactions | 0/TBD | Not started | - |
 | 6. UX Polish | 0/TBD | Not started | - |
