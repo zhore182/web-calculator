@@ -5,6 +5,8 @@ import {
   moveCursor,
   insertParenthesis,
   getCursorPositionFromClick,
+  insertFunction,
+  insertConstant,
 } from './cursorHelpers';
 
 describe('insertAtCursor', () => {
@@ -170,5 +172,133 @@ describe('getCursorPositionFromClick', () => {
     // Edge case: clicking before start with scroll
     const result = getCursorPositionFromClick(0, 10, 5, 0);
     expect(result).toBe(0);
+  });
+});
+
+describe('insertFunction', () => {
+  it('should insert empty function call in empty expression', () => {
+    const result = insertFunction('', 0, 'sin');
+    expect(result).toEqual({
+      expression: 'sin()',
+      cursorPosition: 4, // Between parentheses
+    });
+  });
+
+  it('should wrap complete number at end of expression', () => {
+    const result = insertFunction('45', 2, 'sin');
+    expect(result).toEqual({
+      expression: 'sin(45)',
+      cursorPosition: 7, // After closing paren
+    });
+  });
+
+  it('should wrap complete number after operator', () => {
+    const result = insertFunction('2+45', 4, 'cos');
+    expect(result).toEqual({
+      expression: '2+cos(45)',
+      cursorPosition: 9,
+    });
+  });
+
+  it('should insert empty function when cursor after operator', () => {
+    const result = insertFunction('2+', 2, 'tan');
+    expect(result).toEqual({
+      expression: '2+tan()',
+      cursorPosition: 6, // Between parentheses
+    });
+  });
+
+  it('should wrap decimal number', () => {
+    const result = insertFunction('3.14', 4, 'sin');
+    expect(result).toEqual({
+      expression: 'sin(3.14)',
+      cursorPosition: 9,
+    });
+  });
+
+  it('should insert empty function when cursor after multiplication operator', () => {
+    const result = insertFunction('2+3*', 4, 'log');
+    expect(result).toEqual({
+      expression: '2+3*log()',
+      cursorPosition: 8, // Between parentheses (4 + 'log'.length(3) + 1)
+    });
+  });
+
+  it('should wrap number when cursor in middle of expression', () => {
+    const result = insertFunction('123+456', 3, 'sin');
+    expect(result).toEqual({
+      expression: 'sin(123)+456',
+      cursorPosition: 8,
+    });
+  });
+
+  it('should insert empty function when cursor at beginning of expression', () => {
+    const result = insertFunction('123', 0, 'cos');
+    expect(result).toEqual({
+      expression: 'cos()123',
+      cursorPosition: 4,
+    });
+  });
+
+  it('should wrap number with various function names', () => {
+    const result1 = insertFunction('90', 2, 'sqrt');
+    expect(result1).toEqual({
+      expression: 'sqrt(90)',
+      cursorPosition: 8,
+    });
+
+    const result2 = insertFunction('100', 3, 'log');
+    expect(result2).toEqual({
+      expression: 'log(100)',
+      cursorPosition: 8,
+    });
+
+    const result3 = insertFunction('1', 1, 'ln');
+    expect(result3).toEqual({
+      expression: 'ln(1)',
+      cursorPosition: 5,
+    });
+  });
+});
+
+describe('insertConstant', () => {
+  it('should insert pi in empty expression', () => {
+    const result = insertConstant('', 0, 'pi');
+    expect(result).toEqual({
+      expression: 'pi',
+      cursorPosition: 2,
+    });
+  });
+
+  it('should insert pi after number (implicit multiplication)', () => {
+    const result = insertConstant('2', 1, 'pi');
+    expect(result).toEqual({
+      expression: '2pi',
+      cursorPosition: 3,
+    });
+  });
+
+  it('should insert e after operator', () => {
+    const result = insertConstant('2+', 2, 'e');
+    expect(result).toEqual({
+      expression: '2+e',
+      cursorPosition: 3,
+    });
+  });
+
+  it('should insert pi in middle of expression', () => {
+    const result = insertConstant('2*3', 2, 'pi');
+    expect(result).toEqual({
+      expression: '2*pi3',
+      cursorPosition: 4,
+    });
+  });
+
+  it('should insert e at beginning', () => {
+    const result = insertConstant('123', 0, 'e');
+    expect(result).toEqual({
+      expression: 'e123',
+      cursorPosition: 1,
+    });
   });
 });

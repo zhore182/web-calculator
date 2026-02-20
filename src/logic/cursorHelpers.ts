@@ -106,3 +106,83 @@ export function getCursorPositionFromClick(
   // Clamp to valid range [0, expressionLength]
   return Math.max(0, Math.min(expressionLength, position));
 }
+
+/**
+ * Insert a function into expression with smart auto-wrap behavior.
+ * If a complete number exists before cursor, wraps it: 45| + sin → sin(45)|
+ * Otherwise inserts empty function call with auto-closed parentheses: | + sin → sin(|)
+ *
+ * @param expression - The current expression string
+ * @param cursorPosition - Current cursor position
+ * @param funcName - Function name in lowercase (sin, cos, log, etc.)
+ * @returns Updated expression and cursor position
+ */
+export function insertFunction(
+  expression: string,
+  cursorPosition: number,
+  funcName: string
+): { expression: string; cursorPosition: number } {
+  // Check for a completed number immediately before cursor
+  // A number is a sequence of digits possibly with a decimal point
+  let numStart = cursorPosition;
+  let hasNumber = false;
+
+  // Scan backwards from cursor to find start of number
+  while (numStart > 0) {
+    const char = expression[numStart - 1];
+    if (/[0-9.]/.test(char)) {
+      numStart--;
+      hasNumber = true;
+    } else {
+      break;
+    }
+  }
+
+  if (hasNumber) {
+    // Extract the number
+    const number = expression.slice(numStart, cursorPosition);
+
+    // Build new expression: before number + funcName(number) + after cursor
+    const before = expression.slice(0, numStart);
+    const after = expression.slice(cursorPosition);
+    const newExpression = before + funcName + '(' + number + ')' + after;
+
+    // Position cursor after closing parenthesis
+    const newCursorPosition = numStart + funcName.length + 1 + number.length + 1;
+
+    return {
+      expression: newExpression,
+      cursorPosition: newCursorPosition,
+    };
+  } else {
+    // No number before cursor - insert empty function call with auto-close
+    const before = expression.slice(0, cursorPosition);
+    const after = expression.slice(cursorPosition);
+    const newExpression = before + funcName + '()' + after;
+
+    // Position cursor between parentheses
+    const newCursorPosition = cursorPosition + funcName.length + 1;
+
+    return {
+      expression: newExpression,
+      cursorPosition: newCursorPosition,
+    };
+  }
+}
+
+/**
+ * Insert a mathematical constant (pi or e) at cursor position.
+ * The constant is inserted as a string that mathjs can evaluate.
+ *
+ * @param expression - The current expression string
+ * @param cursorPosition - Current cursor position
+ * @param constant - The constant string ('pi' or 'e')
+ * @returns Updated expression and cursor position
+ */
+export function insertConstant(
+  expression: string,
+  cursorPosition: number,
+  constant: string
+): { expression: string; cursorPosition: number } {
+  return insertAtCursor(expression, cursorPosition, constant);
+}
