@@ -10,17 +10,17 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 ## Current Position
 
 Phase: 2 of 6 (Scientific Functions Panel)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In Progress
-Last activity: 2026-02-20 — Completed plan 02-01 (Scientific function evaluation engine)
+Last activity: 2026-02-20 — Completed plan 02-02 (Function input with smart auto-wrap and angle mode UI)
 
-Progress: [████░░░░░░] ~58% (Phase 2: 1/3 plans complete)
+Progress: [█████░░░░░] ~67% (Phase 2: 2/3 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 4.3 minutes
+- Total plans completed: 5
+- Average duration: 4.2 minutes
 - Total execution time: 0.3 hours
 
 **By Phase:**
@@ -28,10 +28,10 @@ Progress: [████░░░░░░] ~58% (Phase 2: 1/3 plans complete)
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01    | 3     | 14min | 4.7min   |
-| 02    | 1     | 3min  | 3.0min   |
+| 02    | 2     | 7min  | 3.5min   |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3min), 01-02 (3min), 01-03 (8min), 02-01 (3min)
+- Last 5 plans: 01-02 (3min), 01-03 (8min), 02-01 (3min), 02-02 (4min)
 - Trend: Efficient execution with comprehensive test coverage
 
 *Updated after each plan completion*
@@ -59,6 +59,10 @@ Recent decisions affecting current work:
 - **[02-01]** Use mathjs custom scope for angle mode — Cleaner than expression preprocessing, overrides trig functions at evaluation time
 - **[02-01]** Pre-validate factorial and sqrt domain — Provides specific error messages instead of generic mathjs errors
 - **[02-01]** Log aliasing via scope (log=base10, ln=natural) — Aligns with calculator conventions (mathjs uses log() for natural log by default)
+- **[02-02]** Smart auto-wrap for function input — Wrapping existing numbers (45 + sin → sin(45)) provides better UX than forcing manual parentheses
+- **[02-02]** Pi displays as π symbol, internally stored as 'pi' — Mathjs evaluates 'pi' natively, symbol rendering is display-only transformation
+- **[02-02]** DEG/RAD badge in display area top-right corner — Visible indicator without cluttering button panel, only in expression mode
+- **[02-02]** Switching angle mode immediately re-evaluates expression — Users expect live feedback when toggling DEG/RAD
 
 ### Pending Todos
 
@@ -82,8 +86,8 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 02-01-PLAN.md — Scientific function evaluation engine
-Resume file: .planning/phases/02-scientific-functions/02-01-SUMMARY.md
+Stopped at: Completed 02-02-PLAN.md — Function input with smart auto-wrap and angle mode UI
+Resume file: .planning/phases/02-scientific-functions/02-02-SUMMARY.md
 
 ## Phase Completion Status
 
@@ -94,7 +98,7 @@ Resume file: .planning/phases/02-scientific-functions/02-01-SUMMARY.md
 
 **Phase 02: Scientific Functions Panel** - IN PROGRESS
 - 02-01: Scientific function evaluation engine ✓
-- 02-02: Scientific calculator UI panel
-- 02-03: Angle mode toggle and integration
+- 02-02: Function input with smart auto-wrap and angle mode UI ✓
+- 02-03: Scientific button panel UI
 
-**Next:** Plan 02-02 - Scientific calculator UI panel
+**Next:** Plan 02-03 - Scientific button panel UI
