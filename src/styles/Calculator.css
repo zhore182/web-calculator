@@ -140,6 +140,41 @@
   white-space: nowrap;
 }
 
+/* Autocomplete popup */
+.autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 8px;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  min-width: 100px;
+  max-width: 160px;
+  overflow: hidden;
+}
+
+.autocomplete__list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.autocomplete__item {
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  color: #333;
+}
+
+.autocomplete__item:hover,
+.autocomplete__item--active {
+  background: #e8f0fe;
+  color: #1a73e8;
+}
+
 /* Button grid */
 .button-panel {
   display: grid;
