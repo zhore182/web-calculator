@@ -3,6 +3,7 @@ import { ButtonPanel } from './ButtonPanel';
 import { HistoryPanel } from './HistoryPanel';
 import { ModeToggle } from './ModeToggle';
 import { Autocomplete } from './Autocomplete';
+import { ScientificPanel } from './ScientificPanel';
 import type { HistoryEntry } from '../logic/historyHandlers';
 import type { ExpressionMode } from '../logic/expressionParser';
 import '../styles/Calculator.css';
@@ -26,6 +27,8 @@ export interface CalculatorProps {
   autocompleteIndex: number;
   autocompleteVisible: boolean;
   onAutocompleteSelect: (funcName: string) => void;
+  scientificPanelOpen: boolean;
+  onScientificToggle: () => void;
 }
 
 export default function Calculator({
@@ -47,6 +50,8 @@ export default function Calculator({
   autocompleteIndex,
   autocompleteVisible,
   onAutocompleteSelect,
+  scientificPanelOpen,
+  onScientificToggle,
 }: CalculatorProps) {
   // In expression mode: Display shows expression on top line, preview/result on bottom
   // In simple mode: Display shows only displayValue on bottom line
@@ -54,9 +59,24 @@ export default function Calculator({
     ? previewResult
     : displayValue;
 
+  const calculatorClassName = scientificPanelOpen
+    ? 'calculator calculator--sci-open'
+    : 'calculator';
+
+  const toggleClassName = scientificPanelOpen
+    ? 'scientific-toggle scientific-toggle--active'
+    : 'scientific-toggle';
+
   return (
-    <div className="calculator">
+    <div className={calculatorClassName}>
       <ModeToggle mode={expressionMode} onModeChange={onModeChange} />
+      <button
+        className={toggleClassName}
+        onClick={onScientificToggle}
+        data-testid="scientific-toggle"
+      >
+        SCI
+      </button>
       <div style={{ position: 'relative' }}>
         <Display
           value={displayResultValue}
@@ -75,7 +95,13 @@ export default function Calculator({
           visible={autocompleteVisible}
         />
       </div>
-      <ButtonPanel onButtonClick={onButtonClick} />
+      <div className="calculator__panels">
+        <ScientificPanel
+          onButtonClick={onButtonClick}
+          visible={scientificPanelOpen}
+        />
+        <ButtonPanel onButtonClick={onButtonClick} />
+      </div>
       <HistoryPanel
         entries={historyEntries}
         onClear={onHistoryClear}

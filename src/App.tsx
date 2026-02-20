@@ -39,6 +39,9 @@ function App() {
   const [autocompleteIndex, setAutocompleteIndex] = useState(0);
   const [autocompleteVisible, setAutocompleteVisible] = useState(false);
 
+  // Scientific panel state
+  const [scientificPanelOpen, setScientificPanelOpen] = useState(false);
+
   const hasMemory = memoryValue !== 0;
   const historyLoadedRef = useRef(false);
 
@@ -113,6 +116,10 @@ function App() {
       return newMode;
     });
   }, [expression]);
+
+  const handleScientificToggle = useCallback(() => {
+    setScientificPanelOpen(prev => !prev);
+  }, []);
 
   const handleAutocompleteSelect = useCallback((funcName: string) => {
     // Remove the typed buffer from expression
@@ -494,6 +501,8 @@ function App() {
       autocompleteIndex={autocompleteIndex}
       autocompleteVisible={autocompleteVisible}
       onAutocompleteSelect={handleAutocompleteSelect}
+      scientificPanelOpen={scientificPanelOpen}
+      onScientificToggle={handleScientificToggle}
     />
   );
 }
