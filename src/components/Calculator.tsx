@@ -2,6 +2,7 @@ import { Display } from './Display';
 import { ButtonPanel } from './ButtonPanel';
 import { HistoryPanel } from './HistoryPanel';
 import { ModeToggle } from './ModeToggle';
+import { Autocomplete } from './Autocomplete';
 import type { HistoryEntry } from '../logic/historyHandlers';
 import type { ExpressionMode } from '../logic/expressionParser';
 import '../styles/Calculator.css';
@@ -21,6 +22,10 @@ export interface CalculatorProps {
   onExpressionClick?: (position: number) => void;
   angleMode: 'DEG' | 'RAD';
   onAngleModeToggle: () => void;
+  autocompleteMatches: string[];
+  autocompleteIndex: number;
+  autocompleteVisible: boolean;
+  onAutocompleteSelect: (funcName: string) => void;
 }
 
 export default function Calculator({
@@ -38,6 +43,10 @@ export default function Calculator({
   onExpressionClick,
   angleMode,
   onAngleModeToggle,
+  autocompleteMatches,
+  autocompleteIndex,
+  autocompleteVisible,
+  onAutocompleteSelect,
 }: CalculatorProps) {
   // In expression mode: Display shows expression on top line, preview/result on bottom
   // In simple mode: Display shows only displayValue on bottom line
@@ -48,16 +57,24 @@ export default function Calculator({
   return (
     <div className="calculator">
       <ModeToggle mode={expressionMode} onModeChange={onModeChange} />
-      <Display
-        value={displayResultValue}
-        hasMemory={hasMemory}
-        expression={expression}
-        expressionMode={expressionMode === 'expression'}
-        cursorPosition={cursorPosition}
-        onExpressionClick={onExpressionClick}
-        angleMode={angleMode}
-        onAngleModeToggle={onAngleModeToggle}
-      />
+      <div style={{ position: 'relative' }}>
+        <Display
+          value={displayResultValue}
+          hasMemory={hasMemory}
+          expression={expression}
+          expressionMode={expressionMode === 'expression'}
+          cursorPosition={cursorPosition}
+          onExpressionClick={onExpressionClick}
+          angleMode={angleMode}
+          onAngleModeToggle={onAngleModeToggle}
+        />
+        <Autocomplete
+          matches={autocompleteMatches}
+          selectedIndex={autocompleteIndex}
+          onSelect={onAutocompleteSelect}
+          visible={autocompleteVisible}
+        />
+      </div>
       <ButtonPanel onButtonClick={onButtonClick} />
       <HistoryPanel
         entries={historyEntries}

@@ -11,6 +11,13 @@ import { evaluateExpression } from './logic/expressionParser';
 import type { ExpressionMode, AngleMode } from './logic/expressionParser';
 import { insertAtCursor, deleteAtCursor, moveCursor, insertParenthesis, insertFunction, insertConstant } from './logic/cursorHelpers';
 
+// Scientific function names for autocomplete
+const SCIENTIFIC_FUNCTIONS = [
+  'sin', 'cos', 'tan', 'asin', 'acos', 'atan',
+  'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh',
+  'log', 'ln', 'sqrt', 'cbrt', 'abs', 'nthRoot'
+];
+
 function App() {
   const [displayValue, setDisplayValue] = useState('0');
   const [previousValue, setPreviousValue] = useState<string | null>(null);
@@ -25,6 +32,12 @@ function App() {
   const [cursorPosition, setCursorPosition] = useState(0); // Cursor position within expression
   const [previewResult, setPreviewResult] = useState('');   // Live result preview
   const [angleMode, setAngleMode] = useState<AngleMode>('DEG'); // Default DEG per user decision
+
+  // Autocomplete state
+  const [typingBuffer, setTypingBuffer] = useState('');        // Letters typed so far
+  const [autocompleteMatches, setAutocompleteMatches] = useState<string[]>([]);
+  const [autocompleteIndex, setAutocompleteIndex] = useState(0);
+  const [autocompleteVisible, setAutocompleteVisible] = useState(false);
 
   const hasMemory = memoryValue !== 0;
   const historyLoadedRef = useRef(false);
@@ -101,6 +114,32 @@ function App() {
     });
   }, [expression]);
 
+  const handleAutocompleteSelect = useCallback((funcName: string) => {
+    // Remove the typed buffer from expression
+    const bufferStart = cursorPosition - typingBuffer.length;
+    const exprWithoutBuffer = expression.slice(0, bufferStart) + expression.slice(cursorPosition);
+
+    // Insert function at buffer start position
+    const { expression: newExpr, cursorPosition: newCursor } = insertFunction(
+      exprWithoutBuffer, bufferStart, funcName
+    );
+
+    setExpression(newExpr);
+    setCursorPosition(newCursor);
+    setTypingBuffer('');
+    setAutocompleteVisible(false);
+    setAutocompleteMatches([]);
+    setAutocompleteIndex(0);
+
+    // Try live preview
+    const result = evaluateExpression(newExpr, angleMode);
+    if (result.status === 'success' && result.display) {
+      setPreviewResult(result.display);
+    } else {
+      setPreviewResult('');
+    }
+  }, [expression, cursorPosition, typingBuffer, angleMode]);
+
   const handleButtonClick = useCallback((value: string) => {
     // Handle clear input (always works, even from Error state)
     if (value === 'C') {
@@ -123,6 +162,67 @@ function App() {
 
     // EXPRESSION MODE input handling
     if (expressionMode === 'expression') {
+      // Autocomplete keyboard navigation (takes priority when visible)
+      if (autocompleteVisible) {
+        if (value === 'ArrowDown') {
+          setAutocompleteIndex(prev => (prev + 1) % autocompleteMatches.length);
+          return;
+        }
+        if (value === 'ArrowUp') {
+          setAutocompleteIndex(prev => (prev - 1 + autocompleteMatches.length) % autocompleteMatches.length);
+          return;
+        }
+        if (value === 'Enter') {
+          handleAutocompleteSelect(autocompleteMatches[autocompleteIndex]);
+          return;
+        }
+        if (value === 'Escape') {
+          setAutocompleteVisible(false);
+          setTypingBuffer('');
+          return;
+        }
+      }
+
+      // Clear typing buffer on non-letter input (except autocomplete navigation keys)
+      if (!/^[a-z]$/.test(value) && value !== 'ArrowDown' && value !== 'ArrowUp' && value !== 'Enter' && value !== 'Escape') {
+        if (typingBuffer) {
+          setTypingBuffer('');
+          setAutocompleteVisible(false);
+        }
+      }
+
+      // Handle letter input for function name typing
+      if (/^[a-z]$/.test(value)) {
+        const newBuffer = typingBuffer + value;
+        setTypingBuffer(newBuffer);
+
+        // Also insert the letter into the expression at cursor
+        const { expression: newExpr, cursorPosition: newCursor } = insertAtCursor(expression, cursorPosition, value);
+        setExpression(newExpr);
+        setCursorPosition(newCursor);
+
+        // Filter matches
+        if (newBuffer.length >= 2) {
+          const matches = SCIENTIFIC_FUNCTIONS.filter(fn => fn.startsWith(newBuffer));
+          if (matches.length > 0) {
+            setAutocompleteMatches(matches);
+            setAutocompleteIndex(0);
+            setAutocompleteVisible(true);
+          } else {
+            setAutocompleteVisible(false);
+          }
+        }
+
+        // Try live preview
+        const result = evaluateExpression(newExpr, angleMode);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        } else {
+          setPreviewResult('');
+        }
+        return;
+      }
+
       // Handle scientific function input
       const scientificFunctions = ['sin', 'cos', 'tan', 'asin', 'acos', 'atan',
         'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh',
@@ -291,8 +391,8 @@ function App() {
         return;
       }
 
-      // Handle equals input in expression mode
-      if (value === '=') {
+      // Handle equals input in expression mode (both '=' button and 'Enter' key)
+      if (value === '=' || value === 'Enter') {
         const result = evaluateExpression(expression, angleMode);
         if (result.status === 'success' && result.display) {
           // Create history entry
@@ -370,7 +470,7 @@ function App() {
       }
       return;
     }
-  }, [displayValue, previousValue, operator, waitingForOperand, memoryValue, expressionMode, expression, cursorPosition]);
+  }, [displayValue, previousValue, operator, waitingForOperand, memoryValue, expressionMode, expression, cursorPosition, angleMode, autocompleteVisible, autocompleteMatches, autocompleteIndex, typingBuffer, handleAutocompleteSelect]);
 
   useKeyboardInput(handleButtonClick);
 
@@ -390,6 +490,10 @@ function App() {
       onExpressionClick={handleExpressionClick}
       angleMode={angleMode}
       onAngleModeToggle={handleAngleModeToggle}
+      autocompleteMatches={autocompleteMatches}
+      autocompleteIndex={autocompleteIndex}
+      autocompleteVisible={autocompleteVisible}
+      onAutocompleteSelect={handleAutocompleteSelect}
     />
   );
 }

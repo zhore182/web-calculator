@@ -17,6 +17,13 @@ export function useKeyboardInput(onButtonClick: (value: string) => void) {
         return;
       }
 
+      // Pass letter keys for function name typing (expression mode handles routing)
+      if (/^[a-z]$/.test(e.key)) {
+        e.preventDefault();
+        onButtonClick(e.key);
+        return;
+      }
+
       // Define key mapping
       const keyMap: Record<string, string> = {
         // Digits
@@ -36,13 +43,15 @@ export function useKeyboardInput(onButtonClick: (value: string) => void) {
         '*': '*',
         '/': '/',
         // Special
-        'Enter': '=',
+        'Enter': 'Enter',  // Changed from '=' to allow autocomplete to intercept
         'Escape': 'C',
         // Decimal
         '.': '.',
-        // Arrow keys for cursor movement (expression mode)
+        // Arrow keys for cursor movement (expression mode) and autocomplete navigation
         'ArrowLeft': 'ArrowLeft',
         'ArrowRight': 'ArrowRight',
+        'ArrowUp': 'ArrowUp',
+        'ArrowDown': 'ArrowDown',
         // Backspace for deletion
         'Backspace': 'Backspace',
         // Parentheses

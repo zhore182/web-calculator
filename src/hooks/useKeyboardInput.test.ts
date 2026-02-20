@@ -42,11 +42,11 @@ describe('useKeyboardInput', () => {
       expect(onButtonClick).toHaveBeenCalledTimes(4);
     });
 
-    it('maps Enter to equals', () => {
+    it('maps Enter key', () => {
       renderHook(() => useKeyboardInput(onButtonClick));
 
       dispatchKey({ key: 'Enter' });
-      expect(onButtonClick).toHaveBeenCalledWith('=');
+      expect(onButtonClick).toHaveBeenCalledWith('Enter');
       expect(onButtonClick).toHaveBeenCalledTimes(1);
     });
 
@@ -96,10 +96,18 @@ describe('useKeyboardInput', () => {
       expect(onButtonClick).not.toHaveBeenCalled();
     });
 
-    it('ignores unmapped keys', () => {
+    it('passes lowercase letter keys for function typing', () => {
       renderHook(() => useKeyboardInput(onButtonClick));
 
       dispatchKey({ key: 'a' });
+      expect(onButtonClick).toHaveBeenCalledWith('a');
+      expect(onButtonClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('ignores unmapped keys', () => {
+      renderHook(() => useKeyboardInput(onButtonClick));
+
+      dispatchKey({ key: 'A' }); // Uppercase letters not mapped
       expect(onButtonClick).not.toHaveBeenCalled();
     });
 
