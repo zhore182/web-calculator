@@ -64,10 +64,10 @@ Plans:
   2. Scientific panel slides out smoothly without disrupting calculator state
   3. Basic calculator view remains clean when scientific panel is hidden
   4. Toggling the panel preserves all calculator state (expression, memory, history, mode)
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] TBD (populated during planning)
+- [ ] 03-01-PLAN.md — Scientific toggle panel with function buttons, slide animation, and responsive layout
 
 ### Phase 4: Graphing Core
 **Goal**: Users can plot mathematical functions on a 2D graph inline with the calculator
