@@ -8,13 +8,16 @@ export interface DisplayProps {
   expressionMode?: boolean; // Whether in expression mode
   cursorPosition?: number; // For cursor rendering (used by Plan 03)
   onExpressionClick?: (position: number) => void; // Click-to-position callback
+  angleMode?: 'DEG' | 'RAD'; // Angle mode indicator
+  onAngleModeToggle?: () => void; // Angle mode toggle handler
 }
 
 // Helper function to render math symbols in expression display
 function renderExpression(expr: string): string {
   return expr
     .replace(/\*/g, '×')  // Multiply sign (U+00D7)
-    .replace(/\//g, '÷'); // Division sign (U+00F7)
+    .replace(/\//g, '÷')  // Division sign (U+00F7)
+    .replace(/\bpi\b/g, 'π'); // Pi symbol (using word boundary to avoid matching 'asin' → 'aπn')
 }
 
 export function Display({
@@ -23,7 +26,9 @@ export function Display({
   expression = '',
   expressionMode,
   cursorPosition = 0,
-  onExpressionClick
+  onExpressionClick,
+  angleMode,
+  onAngleModeToggle
 }: DisplayProps) {
   const displayClass = value.length > 12 ? "display display--small" : "display";
   const expressionRef = useRef<HTMLDivElement>(null);
@@ -89,6 +94,18 @@ export function Display({
   return (
     <div className={displayClass} data-testid="display">
       {hasMemory && <span className="memory-indicator" data-testid="memory-indicator">M</span>}
+
+      {/* DEG/RAD badge - visible in expression mode */}
+      {angleMode && expressionMode && (
+        <button
+          className="display__angle-badge"
+          onClick={onAngleModeToggle}
+          aria-label={`Angle mode: ${angleMode}. Click to toggle.`}
+          data-testid="angle-badge"
+        >
+          {angleMode}
+        </button>
+      )}
 
       {/* Expression line (top) - visible in expression mode */}
       {showExpressionLine && (

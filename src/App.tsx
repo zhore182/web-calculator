@@ -8,8 +8,8 @@ import { memoryAdd, memorySubtract, memoryRecall, memoryClear } from './logic/me
 import { createHistoryEntry, loadHistory, saveHistory, clearHistory } from './logic/historyHandlers';
 import type { HistoryEntry } from './logic/historyHandlers';
 import { evaluateExpression } from './logic/expressionParser';
-import type { ExpressionMode } from './logic/expressionParser';
-import { insertAtCursor, deleteAtCursor, moveCursor, insertParenthesis } from './logic/cursorHelpers';
+import type { ExpressionMode, AngleMode } from './logic/expressionParser';
+import { insertAtCursor, deleteAtCursor, moveCursor, insertParenthesis, insertFunction, insertConstant } from './logic/cursorHelpers';
 
 function App() {
   const [displayValue, setDisplayValue] = useState('0');
@@ -24,6 +24,7 @@ function App() {
   const [expression, setExpression] = useState('');        // The expression string being built
   const [cursorPosition, setCursorPosition] = useState(0); // Cursor position within expression
   const [previewResult, setPreviewResult] = useState('');   // Live result preview
+  const [angleMode, setAngleMode] = useState<AngleMode>('DEG'); // Default DEG per user decision
 
   const hasMemory = memoryValue !== 0;
   const historyLoadedRef = useRef(false);
@@ -86,6 +87,20 @@ function App() {
     setCursorPosition(position);
   }, []);
 
+  const handleAngleModeToggle = useCallback(() => {
+    setAngleMode(prev => {
+      const newMode = prev === 'DEG' ? 'RAD' : 'DEG';
+      // Per user decision: switching angle mode immediately re-evaluates
+      if (expression) {
+        const result = evaluateExpression(expression, newMode);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        }
+      }
+      return newMode;
+    });
+  }, [expression]);
+
   const handleButtonClick = useCallback((value: string) => {
     // Handle clear input (always works, even from Error state)
     if (value === 'C') {
@@ -108,6 +123,69 @@ function App() {
 
     // EXPRESSION MODE input handling
     if (expressionMode === 'expression') {
+      // Handle scientific function input
+      const scientificFunctions = ['sin', 'cos', 'tan', 'asin', 'acos', 'atan',
+        'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh',
+        'log', 'ln', 'sqrt', 'cbrt', 'abs'];
+
+      if (scientificFunctions.includes(value)) {
+        const { expression: newExpr, cursorPosition: newCursor } = insertFunction(expression, cursorPosition, value);
+        setExpression(newExpr);
+        setCursorPosition(newCursor);
+        // Try live preview
+        const result = evaluateExpression(newExpr, angleMode);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        } else {
+          setPreviewResult('');
+        }
+        return;
+      }
+
+      // Handle constant input (pi, e)
+      if (value === 'pi' || value === 'e_constant') {
+        const constantStr = value === 'pi' ? 'pi' : 'e';
+        const { expression: newExpr, cursorPosition: newCursor } = insertConstant(expression, cursorPosition, constantStr);
+        setExpression(newExpr);
+        setCursorPosition(newCursor);
+        // Try live preview
+        const result = evaluateExpression(newExpr, angleMode);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        } else {
+          setPreviewResult('');
+        }
+        return;
+      }
+
+      // Handle factorial and percentage
+      if (value === '!' || value === '%') {
+        const { expression: newExpr, cursorPosition: newCursor } = insertAtCursor(expression, cursorPosition, value);
+        setExpression(newExpr);
+        setCursorPosition(newCursor);
+        const result = evaluateExpression(newExpr, angleMode);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        } else {
+          setPreviewResult('');
+        }
+        return;
+      }
+
+      // Handle power operator
+      if (value === '^') {
+        const { expression: newExpr, cursorPosition: newCursor } = insertAtCursor(expression, cursorPosition, '^');
+        setExpression(newExpr);
+        setCursorPosition(newCursor);
+        const result = evaluateExpression(newExpr, angleMode);
+        if (result.status === 'success' && result.display) {
+          setPreviewResult(result.display);
+        } else {
+          setPreviewResult('');
+        }
+        return;
+      }
+
       // Handle digit input (0-9)
       if (/^[0-9]$/.test(value)) {
         const { expression: newExpression, cursorPosition: newCursor } = insertAtCursor(expression, cursorPosition, value);
@@ -115,7 +193,7 @@ function App() {
         setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
-        const result = evaluateExpression(newExpression);
+        const result = evaluateExpression(newExpression, angleMode);
         if (result.status === 'success' && result.display) {
           setPreviewResult(result.display);
         }
@@ -129,7 +207,7 @@ function App() {
         setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
-        const result = evaluateExpression(newExpression);
+        const result = evaluateExpression(newExpression, angleMode);
         if (result.status === 'success' && result.display) {
           setPreviewResult(result.display);
         }
@@ -143,7 +221,7 @@ function App() {
         setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
-        const result = evaluateExpression(newExpression);
+        const result = evaluateExpression(newExpression, angleMode);
         if (result.status === 'success' && result.display) {
           setPreviewResult(result.display);
         } else {
@@ -159,7 +237,7 @@ function App() {
         setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
-        const result = evaluateExpression(newExpression);
+        const result = evaluateExpression(newExpression, angleMode);
         if (result.status === 'success' && result.display) {
           setPreviewResult(result.display);
         } else {
@@ -175,7 +253,7 @@ function App() {
         setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
-        const result = evaluateExpression(newExpression);
+        const result = evaluateExpression(newExpression, angleMode);
         if (result.status === 'success' && result.display) {
           setPreviewResult(result.display);
         } else {
@@ -191,7 +269,7 @@ function App() {
         setCursorPosition(newCursor);
 
         // Try to evaluate and show preview
-        const result = evaluateExpression(newExpression);
+        const result = evaluateExpression(newExpression, angleMode);
         if (result.status === 'success' && result.display) {
           setPreviewResult(result.display);
         } else {
@@ -215,7 +293,7 @@ function App() {
 
       // Handle equals input in expression mode
       if (value === '=') {
-        const result = evaluateExpression(expression);
+        const result = evaluateExpression(expression, angleMode);
         if (result.status === 'success' && result.display) {
           // Create history entry
           const entry = createHistoryEntry(expression, '=', '', result.display);
@@ -310,6 +388,8 @@ function App() {
       previewResult={previewResult}
       onModeChange={handleModeChange}
       onExpressionClick={handleExpressionClick}
+      angleMode={angleMode}
+      onAngleModeToggle={handleAngleModeToggle}
     />
   );
 }
