@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** The calculator must correctly evaluate mathematical expressions — from simple arithmetic to scientific functions — and display results clearly.
-**Current focus:** Phase 3 - Scientific UI Panel
+**Current focus:** Phase 4 - Graphing Core
 
 ## Current Position
 
-Phase: 3 of 6 (Scientific UI Panel)
-Plan: 1 of 1 in current phase
-Status: Complete
-Last activity: 2026-02-20 — Completed plan 03-01 (Scientific toggle panel with function buttons)
+Phase: 4 of 6 (Graphing Core)
+Plan: 2 of 2 in current phase
+Status: In Progress
+Last activity: 2026-02-20 — Completed plan 04-01 (Graph rendering engine and GraphPanel component)
 
-Progress: [████████░░] ~50% (Phase 3: 1/1 plans complete)
+Progress: [████████░░] ~58% (Phase 4: 1/2 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: 4.7 minutes
-- Total execution time: 0.55 hours
+- Total plans completed: 8
+- Average duration: 4.5 minutes
+- Total execution time: 0.61 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [████████░░] ~50% (Phase 3: 1/1 plans complete)
 | 01    | 3     | 14min | 4.7min   |
 | 02    | 3     | 15min | 5.0min   |
 | 03    | 1     | 12min | 12.0min  |
+| 04    | 1     | 4min  | 4.0min   |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (3min), 02-02 (4min), 02-03 (8min), 03-01 (12min)
-- Trend: Phase 3 longer due to human verification checkpoint and responsive fix
+- Last 5 plans: 02-02 (4min), 02-03 (8min), 03-01 (12min), 04-01 (4min)
+- Trend: Phase 4 first plan efficient with pure logic/rendering, no UI integration yet
 
 *Updated after each plan completion*
 
@@ -72,6 +73,10 @@ Recent decisions affecting current work:
 - **[03-01]** Panel stacks below basic buttons on tablet/mobile — User-approved placement, doesn't push main calculator down
 - **[03-01]** Scientific buttons only functional in expression mode — Simple mode ignores them (no-op, no guard needed)
 - **[03-01]** Width transition for desktop, max-height transition for mobile — Different animation axes for horizontal vs vertical layout
+- **[04-01]** Separate pure rendering logic from React component — Makes coordinate transforms and sampling testable without React coupling
+- **[04-01]** Sample count = canvas width (1 sample per pixel column) — Produces smooth curves without oversample cost
+- **[04-01]** Render null when not visible instead of hiding with CSS — Avoids unnecessary canvas rendering and memory allocation
+- **[04-01]** Hardcoded viewport bounds (-10 to 10) for Phase 4 — Zoom and pan functionality deferred to Phase 5
 
 ### Pending Todos
 
@@ -95,8 +100,8 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 03-01-PLAN.md — Scientific toggle panel with function buttons
-Resume file: .planning/phases/03-scientific-ui-panel/03-01-SUMMARY.md
+Stopped at: Completed 04-01-PLAN.md — Graph rendering engine and GraphPanel component
+Resume file: .planning/phases/04-graphing-core/04-01-SUMMARY.md
 
 ## Phase Completion Status
 
@@ -113,4 +118,8 @@ Resume file: .planning/phases/03-scientific-ui-panel/03-01-SUMMARY.md
 **Phase 03: Scientific UI Panel** - ✓ COMPLETE
 - 03-01: Scientific toggle panel with function buttons ✓
 
-**Next:** Phase 04 (to be planned)
+**Phase 04: Graphing Core** - IN PROGRESS
+- 04-01: Graph rendering engine and GraphPanel component ✓
+- 04-02: Integrate graphing into Calculator component (next)
+
+**Next:** Complete Phase 04-02
