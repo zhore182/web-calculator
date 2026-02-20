@@ -51,9 +51,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Scientific evaluation engine (TDD: angle mode, domain errors, all scientific functions)
-- [ ] 02-02-PLAN.md — Function input with smart auto-wrap, constants, and DEG/RAD badge
-- [ ] 02-03-PLAN.md — Keyboard autocomplete popup for function names
+- [x] 02-01-PLAN.md — Scientific evaluation engine (TDD: angle mode, domain errors, all scientific functions)
+- [x] 02-02-PLAN.md — Function input with smart auto-wrap, constants, and DEG/RAD badge
+- [x] 02-03-PLAN.md — Keyboard autocomplete popup for function names
 
 ### Phase 3: Scientific UI Panel
 **Goal**: Scientific functions are accessible through a clean toggle panel that doesn't clutter the basic calculator interface
@@ -120,7 +120,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Expression Parser Foundation | 3/3 | ✓ Complete | 2026-02-15 |
-| 2. Scientific Functions | 0/3 | Planned | - |
+| 2. Scientific Functions | 3/3 | ✓ Complete | 2026-02-20 |
 | 3. Scientific UI Panel | 0/TBD | Not started | - |
 | 4. Graphing Core | 0/TBD | Not started | - |
 | 5. Graphing Interactions | 0/TBD | Not started | - |
