@@ -4,6 +4,7 @@ import { HistoryPanel } from './HistoryPanel';
 import { ModeToggle } from './ModeToggle';
 import { Autocomplete } from './Autocomplete';
 import { ScientificPanel } from './ScientificPanel';
+import { GraphPanel } from './GraphPanel';
 import type { HistoryEntry } from '../logic/historyHandlers';
 import type { ExpressionMode } from '../logic/expressionParser';
 import '../styles/Calculator.css';
@@ -29,6 +30,13 @@ export interface CalculatorProps {
   onAutocompleteSelect: (funcName: string) => void;
   scientificPanelOpen: boolean;
   onScientificToggle: () => void;
+  graphExpression: string;
+  graphInputValue: string;
+  graphVisible: boolean;
+  onGraphPlot: () => void;
+  onGraphClear: () => void;
+  onGraphInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onGraphInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export default function Calculator({
@@ -52,6 +60,13 @@ export default function Calculator({
   onAutocompleteSelect,
   scientificPanelOpen,
   onScientificToggle,
+  graphExpression,
+  graphInputValue,
+  graphVisible,
+  onGraphPlot,
+  onGraphClear,
+  onGraphInputChange,
+  onGraphInputKeyDown,
 }: CalculatorProps) {
   // In expression mode: Display shows expression on top line, preview/result on bottom
   // In simple mode: Display shows only displayValue on bottom line
@@ -102,6 +117,33 @@ export default function Calculator({
         />
         <ButtonPanel onButtonClick={onButtonClick} />
       </div>
+      <div className="graph-controls">
+        <div className="graph-controls__input-row">
+          <span className="graph-controls__label">y =</span>
+          <input
+            className="graph-controls__input"
+            type="text"
+            value={graphInputValue}
+            onChange={onGraphInputChange}
+            onKeyDown={onGraphInputKeyDown}
+            placeholder="f(x), e.g. sin(x)"
+            data-testid="graph-input"
+          />
+        </div>
+        <div className="graph-controls__buttons">
+          <button className="graph-controls__btn graph-controls__btn--plot" onClick={onGraphPlot}>
+            Plot
+          </button>
+          <button className="graph-controls__btn graph-controls__btn--clear" onClick={onGraphClear}>
+            Clear
+          </button>
+        </div>
+      </div>
+      <GraphPanel
+        expression={graphExpression}
+        angleMode={angleMode}
+        visible={graphVisible}
+      />
       <HistoryPanel
         entries={historyEntries}
         onClear={onHistoryClear}

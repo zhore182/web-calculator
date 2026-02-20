@@ -42,6 +42,11 @@ function App() {
   // Scientific panel state
   const [scientificPanelOpen, setScientificPanelOpen] = useState(false);
 
+  // Graph state
+  const [graphExpression, setGraphExpression] = useState('');   // The plotted expression
+  const [graphInputValue, setGraphInputValue] = useState('');   // Current input field value
+  const [graphVisible, setGraphVisible] = useState(false);      // Whether graph panel is shown
+
   const hasMemory = memoryValue !== 0;
   const historyLoadedRef = useRef(false);
 
@@ -120,6 +125,29 @@ function App() {
   const handleScientificToggle = useCallback(() => {
     setScientificPanelOpen(prev => !prev);
   }, []);
+
+  const handleGraphPlot = useCallback(() => {
+    if (graphInputValue.trim()) {
+      setGraphExpression(graphInputValue);
+      setGraphVisible(true);
+    }
+  }, [graphInputValue]);
+
+  const handleGraphClear = useCallback(() => {
+    setGraphExpression('');
+    setGraphInputValue('');
+    setGraphVisible(false);
+  }, []);
+
+  const handleGraphInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setGraphInputValue(e.target.value);
+  }, []);
+
+  const handleGraphInputKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleGraphPlot();
+    }
+  }, [handleGraphPlot]);
 
   const handleAutocompleteSelect = useCallback((funcName: string) => {
     // Remove the typed buffer from expression
@@ -503,6 +531,13 @@ function App() {
       onAutocompleteSelect={handleAutocompleteSelect}
       scientificPanelOpen={scientificPanelOpen}
       onScientificToggle={handleScientificToggle}
+      graphExpression={graphExpression}
+      graphInputValue={graphInputValue}
+      graphVisible={graphVisible}
+      onGraphPlot={handleGraphPlot}
+      onGraphClear={handleGraphClear}
+      onGraphInputChange={handleGraphInputChange}
+      onGraphInputKeyDown={handleGraphInputKeyDown}
     />
   );
 }
