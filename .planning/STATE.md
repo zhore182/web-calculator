@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** The calculator must correctly evaluate mathematical expressions — from simple arithmetic to scientific functions — and display results clearly.
-**Current focus:** Phase 1 - Expression Parser Foundation
+**Current focus:** Phase 2 - Scientific Functions Panel
 
 ## Current Position
 
-Phase: 1 of 6 (Expression Parser Foundation)
-Plan: 3 of 3 in current phase
-Status: Complete
-Last activity: 2026-02-16 — Completed plan 01-03 (Expression editing with cursor management)
+Phase: 2 of 6 (Scientific Functions Panel)
+Plan: 1 of 3 in current phase
+Status: In Progress
+Last activity: 2026-02-20 — Completed plan 02-01 (Scientific function evaluation engine)
 
-Progress: [███░░░░░░░] ~50% (Phase 1 complete - 3/3 plans)
+Progress: [████░░░░░░] ~58% (Phase 2: 1/3 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 4.7 minutes
-- Total execution time: 0.2 hours
+- Total plans completed: 4
+- Average duration: 4.3 minutes
+- Total execution time: 0.3 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01    | 3     | 14min | 4.7min   |
+| 02    | 1     | 3min  | 3.0min   |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3min), 01-02 (3min), 01-03 (8min)
-- Trend: Increasing complexity (more advanced features)
+- Last 5 plans: 01-01 (3min), 01-02 (3min), 01-03 (8min), 02-01 (3min)
+- Trend: Efficient execution with comprehensive test coverage
 
 *Updated after each plan completion*
 
@@ -55,6 +56,9 @@ Recent decisions affecting current work:
 - **[01-03]** Auto-close parentheses on '(' input — Typing '(' inserts '()' with cursor between, improves UX and reduces syntax errors
 - **[01-03]** Preserve expression on syntax error — After equals with invalid/incomplete expression, show 'Syntax Error' in result but keep expression visible for correction
 - **[01-03]** Separate cursor logic from UI — Pure functions in cursorHelpers.ts are testable independently without React coupling
+- **[02-01]** Use mathjs custom scope for angle mode — Cleaner than expression preprocessing, overrides trig functions at evaluation time
+- **[02-01]** Pre-validate factorial and sqrt domain — Provides specific error messages instead of generic mathjs errors
+- **[02-01]** Log aliasing via scope (log=base10, ln=natural) — Aligns with calculator conventions (mathjs uses log() for natural log by default)
 
 ### Pending Todos
 
@@ -77,9 +81,9 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-16
-Stopped at: Completed 01-03-PLAN.md — Expression editing with cursor management (Phase 1 COMPLETE)
-Resume file: .planning/phases/01-expression-parser-foundation/01-03-SUMMARY.md
+Last session: 2026-02-20
+Stopped at: Completed 02-01-PLAN.md — Scientific function evaluation engine
+Resume file: .planning/phases/02-scientific-functions/02-01-SUMMARY.md
 
 ## Phase Completion Status
 
@@ -88,4 +92,9 @@ Resume file: .planning/phases/01-expression-parser-foundation/01-03-SUMMARY.md
 - 01-02: Split display and mode toggle ✓
 - 01-03: Expression editing with cursor management ✓
 
-**Next:** Phase 02 - Scientific Functions Panel
+**Phase 02: Scientific Functions Panel** - IN PROGRESS
+- 02-01: Scientific function evaluation engine ✓
+- 02-02: Scientific calculator UI panel
+- 02-03: Angle mode toggle and integration
+
+**Next:** Plan 02-02 - Scientific calculator UI panel
