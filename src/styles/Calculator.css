@@ -5,6 +5,11 @@
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: max-width 0.25s ease;
+}
+
+.calculator--sci-open {
+  max-width: 580px;
 }
 
 /* Mode Toggle */
@@ -14,7 +19,33 @@
   background: #3a3a3a;
   border-radius: 8px;
   padding: 4px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+}
+
+/* Scientific Toggle Button */
+.scientific-toggle {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  user-select: none;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.scientific-toggle:hover {
+  color: #aaa;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.scientific-toggle--active {
+  color: #4a9eff;
+  background: rgba(74, 158, 255, 0.1);
 }
 
 .mode-toggle__option {
@@ -175,11 +206,37 @@
   color: #1a73e8;
 }
 
+/* Panel layout container */
+.calculator__panels {
+  display: flex;
+  gap: 8px;
+}
+
+/* Scientific Panel */
+.scientific-panel {
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: width 0.25s ease, opacity 0.2s ease;
+}
+
+.scientific-panel--visible {
+  width: 220px;
+  opacity: 1;
+}
+
+.scientific-panel__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
 /* Button grid */
 .button-panel {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+  flex: 1;
 }
 
 /* Buttons */
@@ -248,6 +305,22 @@
 
 .btn--memory:hover {
   background: #4a6a4a;
+}
+
+.btn--scientific {
+  background: #3a4a5a;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 10px 4px;
+}
+
+.btn--scientific:hover {
+  background: #4a5a6a;
+}
+
+.btn--scientific:active {
+  background: #2a3a4a;
+  transform: scale(0.97);
 }
 
 /* History Panel */
@@ -348,6 +421,10 @@
     padding: 12px;
   }
 
+  .calculator--sci-open {
+    max-width: 100%;
+  }
+
   .mode-toggle {
     margin-bottom: 10px;
   }
@@ -380,6 +457,15 @@
     font-size: 1.25rem;
   }
 
+  /* Stack panels vertically on mobile */
+  .calculator__panels {
+    flex-direction: column-reverse;
+  }
+
+  .scientific-panel--visible {
+    width: 100%;
+  }
+
   .button-panel {
     gap: 6px;
   }
@@ -391,6 +477,11 @@
 
   .btn--memory {
     font-size: 0.85rem;
+  }
+
+  .btn--scientific {
+    font-size: 0.75rem;
+    padding: 8px 4px;
   }
 
   .history-entries {
@@ -433,6 +524,11 @@
 
   .btn--memory {
     font-size: 0.75rem;
+  }
+
+  .btn--scientific {
+    font-size: 0.65rem;
+    padding: 6px 2px;
   }
 
   .history-entries {
