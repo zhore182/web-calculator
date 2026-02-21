@@ -6,16 +6,28 @@ export function useKeyboardInput(onButtonClick: (value: string) => void) {
       // Guard 1: Prevent auto-repeat flooding when key is held down
       if (e.repeat) return;
 
-      // Guard 2: Ignore keyboard shortcuts (Ctrl+C, Alt+Tab, etc.)
-      if (e.ctrlKey || e.altKey || e.metaKey) return;
-
-      // Guard 3: Avoid capturing when user is typing in form fields
+      // Guard 2: Avoid capturing when user is typing in form fields
       if (
         (e.target as HTMLElement).tagName === 'INPUT' ||
         (e.target as HTMLElement).tagName === 'TEXTAREA'
       ) {
         return;
       }
+
+      // Handle copy/paste before blocking other modifier keys
+      if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+        e.preventDefault();
+        onButtonClick('copy');
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+        e.preventDefault();
+        onButtonClick('paste');
+        return;
+      }
+
+      // Block other modifier combos (Alt+Tab, Ctrl+Z, etc.)
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
 
       // Pass letter keys for function name typing (expression mode handles routing)
       if (/^[a-z]$/.test(e.key)) {

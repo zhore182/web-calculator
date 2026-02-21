@@ -184,6 +184,47 @@ function App() {
   }, [expression, cursorPosition, typingBuffer, angleMode]);
 
   const handleButtonClick = useCallback((value: string) => {
+    // Handle copy
+    if (value === 'copy') {
+      // Copy the most relevant value: previewResult if available, else displayValue
+      const textToCopy = (expressionMode === 'expression' && previewResult && previewResult !== 'Syntax Error')
+        ? previewResult
+        : displayValue;
+      navigator.clipboard.writeText(textToCopy);
+      return;
+    }
+
+    // Handle paste
+    if (value === 'paste') {
+      navigator.clipboard.readText().then(text => {
+        if (!text) return;
+        // Clean pasted text: only allow valid math characters
+        const cleaned = text.replace(/[^0-9+\-*/().^!%a-z ]/gi, '').trim();
+        if (!cleaned) return;
+
+        if (expressionMode === 'expression') {
+          // Insert at cursor position
+          const newExpr = expression.slice(0, cursorPosition) + cleaned + expression.slice(cursorPosition);
+          setExpression(newExpr);
+          setCursorPosition(cursorPosition + cleaned.length);
+          // Try live preview
+          const result = evaluateExpression(newExpr, angleMode);
+          if (result.status === 'success' && result.display) {
+            setPreviewResult(result.display);
+          } else {
+            setPreviewResult('');
+          }
+        } else {
+          // Simple mode: if pasted text is a valid number, set as display value
+          const num = parseFloat(cleaned);
+          if (!isNaN(num)) {
+            setDisplayValue(String(num));
+          }
+        }
+      });
+      return;
+    }
+
     // Handle CE (Clear Entry) - clears current input while preserving operation
     if (value === 'CE') {
       if (expressionMode === 'expression') {
