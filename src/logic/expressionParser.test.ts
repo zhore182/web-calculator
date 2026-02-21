@@ -634,4 +634,51 @@ describe('expressionParser', () => {
       expect(result.error).toBe('Cannot divide by zero');
     });
   });
+
+  describe('EXPR-04: Scientific notation for extreme numbers', () => {
+    it('should display scientific notation for 1e15', () => {
+      const result = evaluateExpression('10^15');
+      expect(result.status).toBe('success');
+      expect(result.display).toMatch(/e\+15/);
+    });
+
+    it('should display scientific notation for 0.0000001 (1e-7)', () => {
+      const result = evaluateExpression('0.0000001');
+      expect(result.status).toBe('success');
+      expect(result.display).toMatch(/1e-7/);
+    });
+
+    it('should NOT display scientific notation for 42', () => {
+      const result = evaluateExpression('42');
+      expect(result.status).toBe('success');
+      expect(result.display).toBe('42');
+      expect(result.display).not.toMatch(/e/);
+    });
+
+    it('should NOT display scientific notation for 999999999999 (just under threshold)', () => {
+      const result = evaluateExpression('999999999999');
+      expect(result.status).toBe('success');
+      expect(result.display).toBe('999999999999');
+      expect(result.display).not.toMatch(/e/);
+    });
+
+    it('should display scientific notation for 1000000000000 (at threshold 1e12)', () => {
+      const result = evaluateExpression('1000000000000');
+      expect(result.status).toBe('success');
+      expect(result.display).toMatch(/e\+12/);
+    });
+
+    it('should NOT display scientific notation for 0', () => {
+      const result = evaluateExpression('0');
+      expect(result.status).toBe('success');
+      expect(result.display).toBe('0');
+      expect(result.display).not.toMatch(/e/);
+    });
+
+    it('should display negative scientific notation for -1e15', () => {
+      const result = evaluateExpression('-10^15');
+      expect(result.status).toBe('success');
+      expect(result.display).toMatch(/-.*e\+15/);
+    });
+  });
 });

@@ -167,6 +167,7 @@ function checkSqrtDomain(expr: string): string | null {
 /**
  * Formats a numeric result for display, handling floating-point precision.
  * Uses toPrecision(12) then strips trailing zeros for clean output.
+ * Automatically displays scientific notation for very large or very small numbers.
  *
  * @param value - The numeric value to format
  * @returns Formatted string representation
@@ -180,7 +181,21 @@ export function formatResult(value: number): string {
   // Use toPrecision for clean formatting, then parse to remove trailing zeros
   // This addresses the floating-point precision issue (e.g., 0.1 + 0.2 = 0.3)
   const precision = 12;
-  const formatted = parseFloat(value.toPrecision(precision)).toString();
+  const formatted = parseFloat(value.toPrecision(precision));
 
-  return formatted;
+  // Check if scientific notation should be used
+  // Threshold: |value| >= 1e12 OR (|value| < 1e-6 AND value !== 0)
+  const absValue = Math.abs(formatted);
+  if (absValue >= 1e12 || (absValue < 1e-6 && formatted !== 0)) {
+    // Use scientific notation with 6 significant digits
+    let scientificStr = formatted.toExponential(6);
+
+    // Clean up trailing zeros in mantissa
+    // e.g., "1.000000e+15" -> "1e+15"
+    scientificStr = scientificStr.replace(/\.?0+e/, 'e');
+
+    return scientificStr;
+  }
+
+  return formatted.toString();
 }
