@@ -94,10 +94,11 @@ Plans:
   2. User can pan/drag to navigate different regions of the graph
   3. User can trace the curve to see exact x,y coordinates at any point
   4. User can view a function table showing x/y value pairs for the plotted function
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] TBD (populated during planning)
+- [ ] 05-01-PLAN.md — Zoom and pan interactions (dynamic viewport, mouse wheel zoom, click-drag pan, +/-/Reset controls)
+- [ ] 05-02-PLAN.md — Trace and function table (cursor trace with coordinate readout, toggleable x/y value table)
 
 ### Phase 6: UX Polish
 **Goal**: Final user experience enhancements including scientific notation, improved error handling, and keyboard support
