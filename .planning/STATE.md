@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** The calculator must correctly evaluate mathematical expressions — from simple arithmetic to scientific functions — and display results clearly.
-**Current focus:** Phase 4 - Graphing Core (Complete)
+**Current focus:** Phase 5 - Graphing Interactions (Complete)
 
 ## Current Position
 
 Phase: 5 of 6 (Graphing Interactions)
-Plan: 1 of 2 in current phase
-Status: In Progress
-Last activity: 2026-02-21 — Completed 05-01 (Graph zoom and pan interactions)
+Plan: 2 of 2 in current phase
+Status: Complete
+Last activity: 2026-02-21 — Completed Phase 5 (Zoom, pan, trace, function table)
 
-Progress: [████████░░] ~75% (Phase 5: 1/2 plans complete)
+Progress: [████████░░] ~83% (Phase 5: 2/2 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
-- Average duration: 5.1 minutes
-- Total execution time: 0.87 hours
+- Total plans completed: 11
+- Average duration: 4.9 minutes
+- Total execution time: 0.9 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [████████░░] ~75% (Phase 5: 1/2 plans complete)
 | 02    | 3     | 15min | 5.0min   |
 | 03    | 1     | 12min | 12.0min  |
 | 04    | 2     | 6min  | 3.0min   |
-| 05    | 1     | 5min  | 5.5min   |
+| 05    | 2     | 9min  | 4.8min   |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (12min), 04-01 (4min), 04-02 (2min), 05-01 (5.5min)
-- Trend: Interaction features (event handlers + state management) remain efficient
+- Last 5 plans: 04-01 (4min), 04-02 (2min), 05-01 (5.5min), 05-02 (4min)
+- Trend: Consistent execution speed across interaction features
 
 *Updated after each plan completion*
 
@@ -85,6 +85,10 @@ Recent decisions affecting current work:
 - **[05-01]** Viewport bounds clamped to 0.01-10000 range — Prevents degenerate zoom (too small) or excessive zoom (too large)
 - **[05-01]** Touch events use same pan logic as mouse drag — Consistent mobile/desktop behavior
 - **[05-01]** Zoom controls overlay in top-right corner — Non-intrusive, always accessible regardless of graph content
+- **[05-02]** Trace evaluates at mouse x-position on every mouse move — Smooth, accurate coordinate display without snapping to samples
+- **[05-02]** Function table managed as local state in GraphPanel — No prop drilling needed, table visibility is purely UI concern
+- **[05-02]** Table toggle button (≡) in zoom controls bar — Consistent with existing overlay pattern
+- **[05-02]** Table shows 21 rows spanning viewport xMin..xMax — Auto-updates when viewport changes through zoom/pan
 
 ### Pending Todos
 
@@ -101,15 +105,11 @@ None yet.
 - ~~Implicit multiplication policy: Test if mathjs supports "2π" or requires "2*π" (affects tokenizer design)~~ — RESOLVED: mathjs supports implicit multiplication natively (tested: "2(3)" works)
 - History serialization: Design schema for storing expressions with mode metadata
 
-**Research findings to address in Phase 5 planning:**
-- Graphing performance: Define performance budget and test adaptive sampling for complex functions
-- Axis scaling algorithm: Need auto-scale based on function range sampling
-
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 05-01-PLAN.md — Graph zoom and pan interactions
-Resume file: .planning/phases/05-graphing-interactions/05-01-SUMMARY.md
+Stopped at: Completed Phase 5 execution — Zoom, pan, trace, function table
+Resume file: .planning/phases/05-graphing-interactions/05-02-SUMMARY.md
 
 ## Phase Completion Status
 
@@ -130,8 +130,8 @@ Resume file: .planning/phases/05-graphing-interactions/05-01-SUMMARY.md
 - 04-01: Graph rendering engine and GraphPanel component ✓
 - 04-02: Graph UI integration (input field, plot/clear, angle mode) ✓
 
-**Phase 05: Graphing Interactions** - IN PROGRESS
+**Phase 05: Graphing Interactions** - ✓ COMPLETE
 - 05-01: Graph zoom and pan interactions ✓
-- 05-02: (in progress)
+- 05-02: Trace and function table ✓
 
-**Next:** Phase 05-02
+**Next:** Phase 06 (to be planned)

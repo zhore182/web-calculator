@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 2: Scientific Functions** - Add trigonometric, logarithmic, and exponential functions with angle mode support
 - [x] **Phase 3: Scientific UI Panel** - Create toggle panel for scientific buttons without cluttering basic calculator
 - [x] **Phase 4: Graphing Core** - Build basic function plotting with y=f(x) input and Canvas rendering
-- [ ] **Phase 5: Graphing Interactions** - Add zoom, pan, trace, and function table features to graphs
+- [x] **Phase 5: Graphing Interactions** - Add zoom, pan, trace, and function table features to graphs
 - [ ] **Phase 6: UX Polish** - Enhance user experience with scientific notation, better error handling, and keyboard shortcuts
 
 ## Phase Details
@@ -97,8 +97,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Zoom and pan interactions (dynamic viewport, mouse wheel zoom, click-drag pan, +/-/Reset controls)
-- [ ] 05-02-PLAN.md — Trace and function table (cursor trace with coordinate readout, toggleable x/y value table)
+- [x] 05-01-PLAN.md — Zoom and pan interactions (dynamic viewport, mouse wheel zoom, click-drag pan, +/-/Reset controls)
+- [x] 05-02-PLAN.md — Trace and function table (cursor trace with coordinate readout, toggleable x/y value table)
 
 ### Phase 6: UX Polish
 **Goal**: Final user experience enhancements including scientific notation, improved error handling, and keyboard support
@@ -125,5 +125,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Scientific Functions | 3/3 | ✓ Complete | 2026-02-20 |
 | 3. Scientific UI Panel | 1/1 | ✓ Complete | 2026-02-20 |
 | 4. Graphing Core | 2/2 | ✓ Complete | 2026-02-21 |
-| 5. Graphing Interactions | 0/TBD | Not started | - |
+| 5. Graphing Interactions | 2/2 | ✓ Complete | 2026-02-21 |
 | 6. UX Polish | 0/TBD | Not started | - |
