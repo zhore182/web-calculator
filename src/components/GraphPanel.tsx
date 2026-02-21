@@ -1,15 +1,17 @@
 // React component for Canvas-based graph rendering
 import { useRef, useEffect } from 'react';
-import type { GraphConfig } from '../logic/graphRenderer';
+import type { GraphConfig, ViewportBounds } from '../logic/graphRenderer';
 import { renderGraph } from '../logic/graphRenderer';
 
 export interface GraphPanelProps {
   expression: string;        // The function expression to plot (e.g., "sin(x)", "x^2")
   angleMode: 'DEG' | 'RAD';
   visible: boolean;          // Whether graph panel is shown
+  viewport: ViewportBounds;
+  onViewportChange: (viewport: ViewportBounds) => void;
 }
 
-export function GraphPanel({ expression, angleMode, visible }: GraphPanelProps) {
+export function GraphPanel({ expression, angleMode, visible, viewport }: GraphPanelProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -30,20 +32,20 @@ export function GraphPanel({ expression, angleMode, visible }: GraphPanelProps) 
     // Scale context to match device pixel ratio
     ctx.scale(dpr, dpr);
 
-    // Create GraphConfig with hardcoded defaults for Phase 4
+    // Create GraphConfig using dynamic viewport
     const config: GraphConfig = {
       width: displayWidth,
       height: displayHeight,
-      xMin: -10,
-      xMax: 10,
-      yMin: -10,
-      yMax: 10,
+      xMin: viewport.xMin,
+      xMax: viewport.xMax,
+      yMin: viewport.yMin,
+      yMax: viewport.yMax,
       angleMode,
     };
 
     // Render the graph
     renderGraph(ctx, expression, config);
-  }, [expression, angleMode, visible]);
+  }, [expression, angleMode, visible, viewport]);
 
   // Don't render canvas when not visible
   if (!visible) {

@@ -11,6 +11,20 @@ export interface GraphConfig {
   angleMode: 'DEG' | 'RAD';
 }
 
+export interface ViewportBounds {
+  xMin: number;
+  xMax: number;
+  yMin: number;
+  yMax: number;
+}
+
+export const DEFAULT_VIEWPORT: ViewportBounds = {
+  xMin: -10,
+  xMax: 10,
+  yMin: -10,
+  yMax: 10,
+};
+
 export interface Point {
   x: number;
   y: number | null;  // null for undefined/discontinuous points
@@ -47,6 +61,111 @@ export function pixelToMathX(pixelX: number, config: GraphConfig): number {
 export function pixelToMathY(pixelY: number, config: GraphConfig): number {
   const mathHeight = config.yMax - config.yMin;
   return config.yMin + ((config.height - pixelY) / config.height) * mathHeight;
+}
+
+/**
+ * Clamps viewport bounds to prevent degenerate ranges
+ */
+export function clampViewport(bounds: ViewportBounds): ViewportBounds {
+  const MIN_RANGE = 0.01;
+  const MAX_RANGE = 10000;
+
+  let { xMin, xMax, yMin, yMax } = bounds;
+
+  // Ensure x range is within limits
+  let xRange = xMax - xMin;
+  if (xRange < MIN_RANGE) {
+    const xCenter = (xMin + xMax) / 2;
+    xMin = xCenter - MIN_RANGE / 2;
+    xMax = xCenter + MIN_RANGE / 2;
+    xRange = MIN_RANGE;
+  }
+  if (xRange > MAX_RANGE) {
+    const xCenter = (xMin + xMax) / 2;
+    xMin = xCenter - MAX_RANGE / 2;
+    xMax = xCenter + MAX_RANGE / 2;
+  }
+
+  // Ensure y range is within limits
+  let yRange = yMax - yMin;
+  if (yRange < MIN_RANGE) {
+    const yCenter = (yMin + yMax) / 2;
+    yMin = yCenter - MIN_RANGE / 2;
+    yMax = yCenter + MIN_RANGE / 2;
+    yRange = MIN_RANGE;
+  }
+  if (yRange > MAX_RANGE) {
+    const yCenter = (yMin + yMax) / 2;
+    yMin = yCenter - MAX_RANGE / 2;
+    yMax = yCenter + MAX_RANGE / 2;
+  }
+
+  return { xMin, xMax, yMin, yMax };
+}
+
+/**
+ * Zooms viewport in or out centered on a specific point
+ * @param config Current graph configuration
+ * @param factor Zoom factor (< 1 = zoom in, > 1 = zoom out)
+ * @param centerX Math x-coordinate to zoom toward
+ * @param centerY Math y-coordinate to zoom toward
+ */
+export function zoomViewport(
+  config: GraphConfig,
+  factor: number,
+  centerX: number,
+  centerY: number
+): ViewportBounds {
+  const { xMin, xMax, yMin, yMax } = config;
+
+  // Calculate distances from center to each edge
+  const leftDist = centerX - xMin;
+  const rightDist = xMax - centerX;
+  const bottomDist = centerY - yMin;
+  const topDist = yMax - centerY;
+
+  // Scale these distances by the zoom factor
+  const newLeftDist = leftDist * factor;
+  const newRightDist = rightDist * factor;
+  const newBottomDist = bottomDist * factor;
+  const newTopDist = topDist * factor;
+
+  // Calculate new bounds
+  const newXMin = centerX - newLeftDist;
+  const newXMax = centerX + newRightDist;
+  const newYMin = centerY - newBottomDist;
+  const newYMax = centerY + newTopDist;
+
+  return clampViewport({ xMin: newXMin, xMax: newXMax, yMin: newYMin, yMax: newYMax });
+}
+
+/**
+ * Pans viewport by a pixel delta
+ * @param config Current graph configuration
+ * @param dxPixels Horizontal pixel delta (positive = drag right = shift viewport left)
+ * @param dyPixels Vertical pixel delta (positive = drag down = shift viewport up)
+ */
+export function panViewport(
+  config: GraphConfig,
+  dxPixels: number,
+  dyPixels: number
+): ViewportBounds {
+  const { width, height, xMin, xMax, yMin, yMax } = config;
+
+  // Convert pixel delta to math delta
+  const xRange = xMax - xMin;
+  const yRange = yMax - yMin;
+  const dxMath = (dxPixels / width) * xRange;
+  const dyMath = (dyPixels / height) * yRange;
+
+  // Apply pan (note: positive dxPixels means drag right, which shifts viewport left)
+  const newXMin = xMin - dxMath;
+  const newXMax = xMax - dxMath;
+  // Note: Canvas y is flipped, so positive dyPixels (drag down) shifts viewport up
+  const newYMin = yMin + dyMath;
+  const newYMax = yMax + dyMath;
+
+  return { xMin: newXMin, xMax: newXMax, yMin: newYMin, yMax: newYMax };
 }
 
 /**

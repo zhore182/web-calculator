@@ -10,6 +10,8 @@ import type { HistoryEntry } from './logic/historyHandlers';
 import { evaluateExpression } from './logic/expressionParser';
 import type { ExpressionMode, AngleMode } from './logic/expressionParser';
 import { insertAtCursor, deleteAtCursor, moveCursor, insertParenthesis, insertFunction, insertConstant } from './logic/cursorHelpers';
+import { DEFAULT_VIEWPORT } from './logic/graphRenderer';
+import type { ViewportBounds } from './logic/graphRenderer';
 
 // Scientific function names for autocomplete
 const SCIENTIFIC_FUNCTIONS = [
@@ -46,6 +48,7 @@ function App() {
   const [graphExpression, setGraphExpression] = useState('');   // The plotted expression
   const [graphInputValue, setGraphInputValue] = useState('');   // Current input field value
   const [graphVisible, setGraphVisible] = useState(false);      // Whether graph panel is shown
+  const [graphViewport, setGraphViewport] = useState<ViewportBounds>(DEFAULT_VIEWPORT);
 
   const hasMemory = memoryValue !== 0;
   const historyLoadedRef = useRef(false);
@@ -137,6 +140,11 @@ function App() {
     setGraphExpression('');
     setGraphInputValue('');
     setGraphVisible(false);
+    setGraphViewport(DEFAULT_VIEWPORT);
+  }, []);
+
+  const handleGraphViewportChange = useCallback((viewport: ViewportBounds) => {
+    setGraphViewport(viewport);
   }, []);
 
   const handleGraphInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -534,10 +542,12 @@ function App() {
       graphExpression={graphExpression}
       graphInputValue={graphInputValue}
       graphVisible={graphVisible}
+      graphViewport={graphViewport}
       onGraphPlot={handleGraphPlot}
       onGraphClear={handleGraphClear}
       onGraphInputChange={handleGraphInputChange}
       onGraphInputKeyDown={handleGraphInputKeyDown}
+      onGraphViewportChange={handleGraphViewportChange}
     />
   );
 }

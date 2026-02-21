@@ -7,6 +7,10 @@ import {
   pixelToMathX,
   pixelToMathY,
   sampleFunction,
+  DEFAULT_VIEWPORT,
+  zoomViewport,
+  panViewport,
+  clampViewport,
 } from './graphRenderer';
 
 describe('graphRenderer', () => {
@@ -182,6 +186,108 @@ describe('graphRenderer', () => {
       // ln(e) should be 1 (natural log)
       const lnPoints = sampleFunction('ln(2.718281828)', testConfig);
       expect(lnPoints[0].y).toBeCloseTo(1, 3);
+    });
+  });
+
+  describe('Viewport manipulation', () => {
+    test('DEFAULT_VIEWPORT has expected values', () => {
+      expect(DEFAULT_VIEWPORT).toEqual({
+        xMin: -10,
+        xMax: 10,
+        yMin: -10,
+        yMax: 10,
+      });
+    });
+
+    test('zoomViewport with factor 0.5 (zoom in) centered at origin halves range', () => {
+      const result = zoomViewport(testConfig, 0.5, 0, 0);
+
+      // Range should be halved from 20 to 10
+      expect(result.xMax - result.xMin).toBeCloseTo(10, 5);
+      expect(result.yMax - result.yMin).toBeCloseTo(10, 5);
+
+      // Should be centered at origin
+      expect(result.xMin).toBeCloseTo(-5, 5);
+      expect(result.xMax).toBeCloseTo(5, 5);
+      expect(result.yMin).toBeCloseTo(-5, 5);
+      expect(result.yMax).toBeCloseTo(5, 5);
+    });
+
+    test('zoomViewport with factor 2 (zoom out) centered at origin doubles range', () => {
+      const result = zoomViewport(testConfig, 2, 0, 0);
+
+      // Range should be doubled from 20 to 40
+      expect(result.xMax - result.xMin).toBeCloseTo(40, 5);
+      expect(result.yMax - result.yMin).toBeCloseTo(40, 5);
+
+      // Should be centered at origin
+      expect(result.xMin).toBeCloseTo(-20, 5);
+      expect(result.xMax).toBeCloseTo(20, 5);
+      expect(result.yMin).toBeCloseTo(-20, 5);
+      expect(result.yMax).toBeCloseTo(20, 5);
+    });
+
+    test('zoomViewport centered off-origin keeps point at same relative position', () => {
+      const centerX = 5;
+      const centerY = 3;
+      const result = zoomViewport(testConfig, 0.5, centerX, centerY);
+
+      // The specified point should remain at the same position in the viewport
+      // Before zoom: (5, 3) is at 75% across horizontally (15/20 from left)
+      // After zoom: (5, 3) should still be at 75% across horizontally
+      const beforeXRatio = (centerX - testConfig.xMin) / (testConfig.xMax - testConfig.xMin);
+      const afterXRatio = (centerX - result.xMin) / (result.xMax - result.xMin);
+
+      const beforeYRatio = (centerY - testConfig.yMin) / (testConfig.yMax - testConfig.yMin);
+      const afterYRatio = (centerY - result.yMin) / (result.yMax - result.yMin);
+
+      expect(afterXRatio).toBeCloseTo(beforeXRatio, 5);
+      expect(afterYRatio).toBeCloseTo(beforeYRatio, 5);
+
+      // Also verify range changed
+      expect(result.xMax - result.xMin).toBeCloseTo(10, 5);
+    });
+
+    test('panViewport with positive dx shifts viewport left', () => {
+      // Drag right 100 pixels should shift viewport left
+      const result = panViewport(testConfig, 100, 0);
+
+      // 100 pixels is 1/4 of width (400), so should shift by 5 math units (1/4 of 20)
+      expect(result.xMin).toBeCloseTo(-15, 5);
+      expect(result.xMax).toBeCloseTo(5, 5);
+
+      // Y should be unchanged
+      expect(result.yMin).toBe(-10);
+      expect(result.yMax).toBe(10);
+    });
+
+    test('panViewport with positive dy shifts viewport up', () => {
+      // Drag down 100 pixels should shift viewport up
+      const result = panViewport(testConfig, 0, 100);
+
+      // 100 pixels is 1/3 of height (300), so should shift by ~6.67 math units (1/3 of 20)
+      expect(result.yMin).toBeCloseTo(-10 + 20/3, 5);
+      expect(result.yMax).toBeCloseTo(10 + 20/3, 5);
+
+      // X should be unchanged
+      expect(result.xMin).toBe(-10);
+      expect(result.xMax).toBe(10);
+    });
+
+    test('clampViewport prevents range below 0.01', () => {
+      const tinyViewport = { xMin: 0, xMax: 0.005, yMin: 0, yMax: 0.005 };
+      const result = clampViewport(tinyViewport);
+
+      expect(result.xMax - result.xMin).toBeCloseTo(0.01, 5);
+      expect(result.yMax - result.yMin).toBeCloseTo(0.01, 5);
+    });
+
+    test('clampViewport prevents range above 10000', () => {
+      const hugeViewport = { xMin: -6000, xMax: 6000, yMin: -6000, yMax: 6000 };
+      const result = clampViewport(hugeViewport);
+
+      expect(result.xMax - result.xMin).toBeCloseTo(10000, 5);
+      expect(result.yMax - result.yMin).toBeCloseTo(10000, 5);
     });
   });
 });

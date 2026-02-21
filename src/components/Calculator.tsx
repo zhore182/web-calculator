@@ -7,6 +7,7 @@ import { ScientificPanel } from './ScientificPanel';
 import { GraphPanel } from './GraphPanel';
 import type { HistoryEntry } from '../logic/historyHandlers';
 import type { ExpressionMode } from '../logic/expressionParser';
+import type { ViewportBounds } from '../logic/graphRenderer';
 import '../styles/Calculator.css';
 
 export interface CalculatorProps {
@@ -33,10 +34,12 @@ export interface CalculatorProps {
   graphExpression: string;
   graphInputValue: string;
   graphVisible: boolean;
+  graphViewport: ViewportBounds;
   onGraphPlot: () => void;
   onGraphClear: () => void;
   onGraphInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onGraphInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onGraphViewportChange: (viewport: ViewportBounds) => void;
 }
 
 export default function Calculator({
@@ -63,10 +66,12 @@ export default function Calculator({
   graphExpression,
   graphInputValue,
   graphVisible,
+  graphViewport,
   onGraphPlot,
   onGraphClear,
   onGraphInputChange,
   onGraphInputKeyDown,
+  onGraphViewportChange,
 }: CalculatorProps) {
   // In expression mode: Display shows expression on top line, preview/result on bottom
   // In simple mode: Display shows only displayValue on bottom line
@@ -143,6 +148,8 @@ export default function Calculator({
         expression={graphExpression}
         angleMode={angleMode}
         visible={graphVisible}
+        viewport={graphViewport}
+        onViewportChange={onGraphViewportChange}
       />
       <HistoryPanel
         entries={historyEntries}
