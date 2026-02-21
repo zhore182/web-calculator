@@ -1,7 +1,8 @@
 // React component for Canvas-based graph rendering
 import { useRef, useEffect, useState } from 'react';
 import type { GraphConfig, ViewportBounds } from '../logic/graphRenderer';
-import { renderGraph, zoomViewport, panViewport, pixelToMathX, pixelToMathY, DEFAULT_VIEWPORT } from '../logic/graphRenderer';
+import { renderGraph, zoomViewport, panViewport, pixelToMathX, pixelToMathY, DEFAULT_VIEWPORT, evaluateAtX, renderTracePoint, generateTableData } from '../logic/graphRenderer';
+import { FunctionTable } from './FunctionTable';
 
 export interface GraphPanelProps {
   expression: string;        // The function expression to plot (e.g., "sin(x)", "x^2")
@@ -20,6 +21,8 @@ export function GraphPanel({ expression, angleMode, visible, viewport, onViewpor
     lastY: 0,
   });
   const [isDragging, setIsDragging] = useState(false);
+  const [tracePoint, setTracePoint] = useState<{ x: number; y: number; pixelX: number; pixelY: number } | null>(null);
+  const [showTable, setShowTable] = useState(false);
 
   useEffect(() => {
     if (!visible || !canvasRef.current) return;
@@ -55,7 +58,15 @@ export function GraphPanel({ expression, angleMode, visible, viewport, onViewpor
 
     // Render the graph
     renderGraph(ctx, expression, config);
-  }, [expression, angleMode, visible, viewport]);
+
+    // Render trace point if set and within viewport
+    if (tracePoint && expression.trim() !== '') {
+      const { x, y } = tracePoint;
+      if (x >= viewport.xMin && x <= viewport.xMax && y >= viewport.yMin && y <= viewport.yMax) {
+        renderTracePoint(ctx, x, y, config);
+      }
+    }
+  }, [expression, angleMode, visible, viewport, tracePoint]);
 
   // Mouse wheel zoom handler
   const handleWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
@@ -92,20 +103,53 @@ export function GraphPanel({ expression, angleMode, visible, viewport, onViewpor
     setIsDragging(true);
   };
 
-  // Mouse move handler - pan during drag
+  // Mouse move handler - pan during drag or trace when not dragging
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!dragStateRef.current.dragging || !configRef.current) return;
+    if (!configRef.current) return;
 
-    const dx = e.clientX - dragStateRef.current.lastX;
-    const dy = e.clientY - dragStateRef.current.lastY;
+    if (dragStateRef.current.dragging) {
+      // Pan during drag
+      const dx = e.clientX - dragStateRef.current.lastX;
+      const dy = e.clientY - dragStateRef.current.lastY;
 
-    // Update last position
-    dragStateRef.current.lastX = e.clientX;
-    dragStateRef.current.lastY = e.clientY;
+      // Update last position
+      dragStateRef.current.lastX = e.clientX;
+      dragStateRef.current.lastY = e.clientY;
 
-    // Apply pan
-    const newViewport = panViewport(configRef.current, dx, dy);
-    onViewportChange(newViewport);
+      // Apply pan
+      const newViewport = panViewport(configRef.current, dx, dy);
+      onViewportChange(newViewport);
+
+      // Clear trace point while dragging
+      setTracePoint(null);
+    } else {
+      // Trace when not dragging
+      if (expression.trim() === '') {
+        setTracePoint(null);
+        return;
+      }
+
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      // Get mouse position relative to canvas
+      const rect = canvas.getBoundingClientRect();
+      const pixelX = e.clientX - rect.left;
+      const pixelY = e.clientY - rect.top;
+
+      // Convert to math coordinates
+      const mathX = pixelToMathX(pixelX, configRef.current);
+
+      // Evaluate y at this x
+      const mathY = evaluateAtX(expression, mathX, angleMode);
+
+      // If y is valid and within viewport, set trace point
+      if (mathY !== null && mathY >= viewport.yMin && mathY <= viewport.yMax) {
+        setTracePoint({ x: mathX, y: mathY, pixelX, pixelY });
+      } else {
+        setTracePoint(null);
+      }
+    }
   };
 
   // Mouse up handler - end drag
@@ -114,12 +158,13 @@ export function GraphPanel({ expression, angleMode, visible, viewport, onViewpor
     setIsDragging(false);
   };
 
-  // Mouse leave handler - end drag if dragging
+  // Mouse leave handler - end drag if dragging and clear trace point
   const handleMouseLeave = () => {
     if (dragStateRef.current.dragging) {
       dragStateRef.current.dragging = false;
       setIsDragging(false);
     }
+    setTracePoint(null);
   };
 
   // Touch start handler
@@ -184,53 +229,82 @@ export function GraphPanel({ expression, angleMode, visible, viewport, onViewpor
     onViewportChange(DEFAULT_VIEWPORT);
   };
 
+  // Table toggle handler
+  const handleTableToggle = () => {
+    setShowTable(!showTable);
+  };
+
   // Don't render canvas when not visible
   if (!visible) {
     return null;
   }
 
+  // Generate table data when table is visible
+  const tableData = showTable && configRef.current && expression.trim() !== ''
+    ? generateTableData(expression, configRef.current)
+    : [];
+
   const canvasClassName = isDragging
     ? 'graph-panel__canvas graph-panel__canvas--dragging'
     : 'graph-panel__canvas';
 
+  const tableButtonClassName = showTable
+    ? 'graph-panel__control-btn graph-panel__control-btn--active'
+    : 'graph-panel__control-btn';
+
   return (
-    <div className="graph-panel">
-      <div className="graph-panel__controls">
-        <button
-          className="graph-panel__control-btn"
-          onClick={handleZoomIn}
-          title="Zoom in"
-        >
-          +
-        </button>
-        <button
-          className="graph-panel__control-btn"
-          onClick={handleZoomOut}
-          title="Zoom out"
-        >
-          −
-        </button>
-        <button
-          className="graph-panel__control-btn"
-          onClick={handleReset}
-          title="Reset view"
-        >
-          ⟲
-        </button>
+    <>
+      <div className="graph-panel">
+        <div className="graph-panel__controls">
+          <button
+            className="graph-panel__control-btn"
+            onClick={handleZoomIn}
+            title="Zoom in"
+          >
+            +
+          </button>
+          <button
+            className="graph-panel__control-btn"
+            onClick={handleZoomOut}
+            title="Zoom out"
+          >
+            −
+          </button>
+          <button
+            className="graph-panel__control-btn"
+            onClick={handleReset}
+            title="Reset view"
+          >
+            ⟲
+          </button>
+          <button
+            className={tableButtonClassName}
+            onClick={handleTableToggle}
+            title="Toggle table"
+          >
+            ≡
+          </button>
+        </div>
+        {tracePoint && (
+          <div className="graph-panel__trace-readout">
+            x: {tracePoint.x.toFixed(4)}, y: {tracePoint.y.toFixed(4)}
+          </div>
+        )}
+        <canvas
+          ref={canvasRef}
+          className={canvasClassName}
+          style={{ width: '100%', height: '200px' }}
+          onWheel={handleWheel}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        />
       </div>
-      <canvas
-        ref={canvasRef}
-        className={canvasClassName}
-        style={{ width: '100%', height: '200px' }}
-        onWheel={handleWheel}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      />
-    </div>
+      <FunctionTable data={tableData} visible={showTable} />
+    </>
   );
 }

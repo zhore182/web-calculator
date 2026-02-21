@@ -284,50 +284,57 @@ export function renderTickLabels(ctx: CanvasRenderingContext2D, config: GraphCon
 }
 
 /**
+ * Evaluates an expression at a single x value
+ * @returns The y value, or null if evaluation fails or result is non-finite
+ */
+export function evaluateAtX(expression: string, x: number, angleMode: 'DEG' | 'RAD'): number | null {
+  // Create evaluation scope with angle mode and log aliasing
+  const scope: Record<string, any> = {};
+
+  // Log aliasing: log() = base 10, ln() = natural log
+  scope.log = (n: number) => Math.log10(n);
+  scope.ln = (n: number) => Math.log(n);
+
+  // Angle mode handling for trig functions
+  if (angleMode === 'DEG') {
+    // Override trig functions to convert degrees to radians
+    scope.sin = (n: number) => Math.sin(n * Math.PI / 180);
+    scope.cos = (n: number) => Math.cos(n * Math.PI / 180);
+    scope.tan = (n: number) => Math.tan(n * Math.PI / 180);
+
+    // Override inverse trig to convert radians to degrees
+    scope.asin = (n: number) => Math.asin(n) * 180 / Math.PI;
+    scope.acos = (n: number) => Math.acos(n) * 180 / Math.PI;
+    scope.atan = (n: number) => Math.atan(n) * 180 / Math.PI;
+  }
+
+  try {
+    // Set x in scope and evaluate
+    scope.x = x;
+    const result = evaluate(expression, scope);
+
+    // Check for valid numeric result
+    if (typeof result === 'number' && isFinite(result)) {
+      return result;
+    }
+    return null;
+  } catch (error) {
+    // Evaluation failed
+    return null;
+  }
+}
+
+/**
  * Samples a function expression at evenly-spaced x-values
  */
 export function sampleFunction(expression: string, config: GraphConfig): Point[] {
   const points: Point[] = [];
   const sampleCount = config.width; // 1 sample per pixel column
 
-  // Create evaluation scope with angle mode and log aliasing
-  const scope: Record<string, any> = {};
-
-  // Log aliasing: log() = base 10, ln() = natural log
-  scope.log = (x: number) => Math.log10(x);
-  scope.ln = (x: number) => Math.log(x);
-
-  // Angle mode handling for trig functions
-  if (config.angleMode === 'DEG') {
-    // Override trig functions to convert degrees to radians
-    scope.sin = (x: number) => Math.sin(x * Math.PI / 180);
-    scope.cos = (x: number) => Math.cos(x * Math.PI / 180);
-    scope.tan = (x: number) => Math.tan(x * Math.PI / 180);
-
-    // Override inverse trig to convert radians to degrees
-    scope.asin = (x: number) => Math.asin(x) * 180 / Math.PI;
-    scope.acos = (x: number) => Math.acos(x) * 180 / Math.PI;
-    scope.atan = (x: number) => Math.atan(x) * 180 / Math.PI;
-  }
-
   for (let i = 0; i < sampleCount; i++) {
     const x = config.xMin + (i / (sampleCount - 1)) * (config.xMax - config.xMin);
-
-    try {
-      // Set x in scope and evaluate
-      scope.x = x;
-      const result = evaluate(expression, scope);
-
-      // Check for valid numeric result
-      if (typeof result === 'number' && isFinite(result)) {
-        points.push({ x, y: result });
-      } else {
-        points.push({ x, y: null });
-      }
-    } catch (error) {
-      // Evaluation failed for this point
-      points.push({ x, y: null });
-    }
+    const y = evaluateAtX(expression, x, config.angleMode);
+    points.push({ x, y });
   }
 
   return points;
@@ -372,6 +379,67 @@ export function renderCurve(
   }
 
   ctx.stroke();
+}
+
+/**
+ * Renders a trace point (filled circle with crosshairs) at a math coordinate
+ */
+export function renderTracePoint(
+  ctx: CanvasRenderingContext2D,
+  mathX: number,
+  mathY: number,
+  config: GraphConfig
+): void {
+  const pixelX = mathToPixelX(mathX, config);
+  const pixelY = mathToPixelY(mathY, config);
+
+  const color = '#ff6b6b'; // Contrasting red
+
+  // Draw crosshair lines to axes
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 0.5;
+  ctx.setLineDash([3, 3]); // Dashed line
+  ctx.beginPath();
+
+  // Vertical line to x-axis
+  const yAxisPixel = mathToPixelY(0, config);
+  const xAxisYPosition = yAxisPixel >= 0 && yAxisPixel <= config.height ? yAxisPixel : config.height;
+  ctx.moveTo(pixelX, pixelY);
+  ctx.lineTo(pixelX, xAxisYPosition);
+
+  // Horizontal line to y-axis
+  const xAxisPixel = mathToPixelX(0, config);
+  const yAxisXPosition = xAxisPixel >= 0 && xAxisPixel <= config.width ? xAxisPixel : 0;
+  ctx.moveTo(pixelX, pixelY);
+  ctx.lineTo(yAxisXPosition, pixelY);
+
+  ctx.stroke();
+  ctx.setLineDash([]); // Reset to solid line
+
+  // Draw filled circle at the point
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(pixelX, pixelY, 5, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
+/**
+ * Generates table data with evenly-spaced x values across viewport
+ */
+export function generateTableData(
+  expression: string,
+  config: GraphConfig,
+  rowCount: number = 21
+): Array<{ x: number; y: number | null }> {
+  const data: Array<{ x: number; y: number | null }> = [];
+
+  for (let i = 0; i < rowCount; i++) {
+    const x = config.xMin + (i / (rowCount - 1)) * (config.xMax - config.xMin);
+    const y = evaluateAtX(expression, x, config.angleMode);
+    data.push({ x, y });
+  }
+
+  return data;
 }
 
 /**

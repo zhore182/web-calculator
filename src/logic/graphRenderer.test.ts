@@ -11,6 +11,8 @@ import {
   zoomViewport,
   panViewport,
   clampViewport,
+  evaluateAtX,
+  generateTableData,
 } from './graphRenderer';
 
 describe('graphRenderer', () => {
@@ -186,6 +188,87 @@ describe('graphRenderer', () => {
       // ln(e) should be 1 (natural log)
       const lnPoints = sampleFunction('ln(2.718281828)', testConfig);
       expect(lnPoints[0].y).toBeCloseTo(1, 3);
+    });
+  });
+
+  describe('Trace point evaluation', () => {
+    test('evaluateAtX returns correct value for x^2 at x=3', () => {
+      const result = evaluateAtX('x^2', 3, 'RAD');
+      expect(result).toBe(9);
+    });
+
+    test('evaluateAtX returns null for invalid expression', () => {
+      const result = evaluateAtX('invalid**syntax', 5, 'RAD');
+      expect(result).toBeNull();
+    });
+
+    test('evaluateAtX respects angle mode for sin(90)', () => {
+      // sin(90) in DEG mode should be 1
+      const degResult = evaluateAtX('sin(90)', 0, 'DEG');
+      expect(degResult).toBeCloseTo(1, 5);
+
+      // sin(90) in RAD mode should be sin(90 radians) ≈ 0.894
+      const radResult = evaluateAtX('sin(90)', 0, 'RAD');
+      expect(radResult).toBeCloseTo(Math.sin(90), 5);
+    });
+
+    test('evaluateAtX returns null for non-finite results', () => {
+      const result = evaluateAtX('1/0', 0, 'RAD');
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('Table data generation', () => {
+    test('generateTableData returns correct default row count', () => {
+      const data = generateTableData('x', testConfig);
+      expect(data.length).toBe(21);
+    });
+
+    test('generateTableData returns custom row count', () => {
+      const data = generateTableData('x', testConfig, 10);
+      expect(data.length).toBe(10);
+    });
+
+    test('generateTableData x values span viewport range', () => {
+      const data = generateTableData('x', testConfig);
+
+      // First x should be xMin
+      expect(data[0].x).toBeCloseTo(-10, 5);
+
+      // Last x should be xMax
+      expect(data[data.length - 1].x).toBeCloseTo(10, 5);
+    });
+
+    test('generateTableData returns correct y values for x^2', () => {
+      const data = generateTableData('x^2', testConfig, 5);
+
+      // At x=-10, y should be 100
+      expect(data[0].y).toBeCloseTo(100, 1);
+
+      // At x=0, y should be 0
+      const midPoint = data[2]; // Middle of 5 points
+      expect(midPoint.x).toBeCloseTo(0, 1);
+      expect(midPoint.y).toBeCloseTo(0, 1);
+
+      // At x=10, y should be 100
+      expect(data[4].y).toBeCloseTo(100, 1);
+    });
+
+    test('generateTableData returns null y for undefined points', () => {
+      // 1/x at x=0 should return null
+      const config: GraphConfig = {
+        ...testConfig,
+        xMin: -1,
+        xMax: 1,
+      };
+
+      const data = generateTableData('1/x', config, 3);
+
+      // Middle point should be at x=0
+      expect(data[1].x).toBeCloseTo(0, 5);
+
+      // y should be null (division by zero)
+      expect(data[1].y).toBeNull();
     });
   });
 
