@@ -5,22 +5,22 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** The calculator must correctly evaluate mathematical expressions — from simple arithmetic to scientific functions — and display results clearly.
-**Current focus:** Phase 5 - Graphing Interactions (Complete)
+**Current focus:** Phase 6 - UX Polish (In Progress)
 
 ## Current Position
 
-Phase: 5 of 6 (Graphing Interactions)
-Plan: 2 of 2 in current phase
-Status: Complete
-Last activity: 2026-02-21 — Completed Phase 5 (Zoom, pan, trace, function table)
+Phase: 6 of 6 (UX Polish)
+Plan: 1 of 2 in current phase
+Status: In Progress
+Last activity: 2026-02-21 — Completed Phase 6 Plan 01 (Scientific notation and CE/C split)
 
-Progress: [████████░░] ~83% (Phase 5: 2/2 plans complete)
+Progress: [█████████░] ~92% (Phase 6: 1/2 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
-- Average duration: 4.9 minutes
+- Total plans completed: 12
+- Average duration: 4.6 minutes
 - Total execution time: 0.9 hours
 
 **By Phase:**
@@ -32,10 +32,11 @@ Progress: [████████░░] ~83% (Phase 5: 2/2 plans complete)
 | 03    | 1     | 12min | 12.0min  |
 | 04    | 2     | 6min  | 3.0min   |
 | 05    | 2     | 9min  | 4.8min   |
+| 06    | 1     | 2min  | 2.0min   |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (4min), 04-02 (2min), 05-01 (5.5min), 05-02 (4min)
-- Trend: Consistent execution speed across interaction features
+- Last 5 plans: 04-02 (2min), 05-01 (5.5min), 05-02 (4min), 06-01 (2min)
+- Trend: Fast execution for polish tasks
 
 *Updated after each plan completion*
 
@@ -89,6 +90,9 @@ Recent decisions affecting current work:
 - **[05-02]** Function table managed as local state in GraphPanel — No prop drilling needed, table visibility is purely UI concern
 - **[05-02]** Table toggle button (≡) in zoom controls bar — Consistent with existing overlay pattern
 - **[05-02]** Table shows 21 rows spanning viewport xMin..xMax — Auto-updates when viewport changes through zoom/pan
+- **[06-01]** Scientific notation threshold at |value| >= 1e12 or |value| < 1e-6 — Aligns with 12-digit toPrecision limit, numbers requiring >12 digits go to scientific notation
+- **[06-01]** CE (Clear Entry) preserves pending operation, C (Clear All) resets everything — Two-level clearing provides granular control
+- **[06-01]** Delete key maps to CE, Escape to C — Intuitive keyboard mapping for two clearing levels
 
 ### Pending Todos
 
@@ -108,8 +112,8 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed Phase 5 execution — Zoom, pan, trace, function table
-Resume file: .planning/phases/05-graphing-interactions/05-02-SUMMARY.md
+Stopped at: Completed Phase 6 Plan 01 — Scientific notation and CE/C split
+Resume file: .planning/phases/06-ux-polish/06-01-SUMMARY.md
 
 ## Phase Completion Status
 
@@ -134,4 +138,6 @@ Resume file: .planning/phases/05-graphing-interactions/05-02-SUMMARY.md
 - 05-01: Graph zoom and pan interactions ✓
 - 05-02: Trace and function table ✓
 
-**Next:** Phase 06 (to be planned)
+**Phase 06: UX Polish** - IN PROGRESS
+- 06-01: Scientific notation and CE/C split ✓
+- 06-02: (to be planned)
