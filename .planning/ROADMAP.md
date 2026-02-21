@@ -109,10 +109,11 @@ Plans:
   2. Clear Entry (CE) clears current input while Clear (C) resets entire calculator state
   3. User can copy calculation results and paste expressions into the calculator
   4. User can type scientific function names and parentheses using keyboard shortcuts
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] TBD (populated during planning)
+- [ ] 06-01-PLAN.md — Scientific notation display and CE/C button split
+- [ ] 06-02-PLAN.md — Clipboard copy/paste and keyboard shortcuts for ^, !, %
 
 ## Progress
 
@@ -126,4 +127,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Scientific UI Panel | 1/1 | ✓ Complete | 2026-02-20 |
 | 4. Graphing Core | 2/2 | ✓ Complete | 2026-02-21 |
 | 5. Graphing Interactions | 2/2 | ✓ Complete | 2026-02-21 |
-| 6. UX Polish | 0/TBD | Not started | - |
+| 6. UX Polish | 0/2 | Not started | - |
