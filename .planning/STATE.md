@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** The calculator must correctly evaluate mathematical expressions — from simple arithmetic to scientific functions — and display results clearly.
-**Current focus:** Phase 4 - Graphing Core
+**Current focus:** Phase 4 - Graphing Core (Complete)
 
 ## Current Position
 
 Phase: 4 of 6 (Graphing Core)
 Plan: 2 of 2 in current phase
-Status: In Progress
-Last activity: 2026-02-20 — Completed plan 04-01 (Graph rendering engine and GraphPanel component)
+Status: Complete
+Last activity: 2026-02-21 — Completed Phase 4 (Graph rendering engine + UI integration)
 
-Progress: [████████░░] ~58% (Phase 4: 1/2 plans complete)
+Progress: [████████░░] ~67% (Phase 4: 2/2 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 4.5 minutes
-- Total execution time: 0.61 hours
+- Total plans completed: 9
+- Average duration: 5.0 minutes
+- Total execution time: 0.75 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [████████░░] ~58% (Phase 4: 1/2 plans complete)
 | 01    | 3     | 14min | 4.7min   |
 | 02    | 3     | 15min | 5.0min   |
 | 03    | 1     | 12min | 12.0min  |
-| 04    | 1     | 4min  | 4.0min   |
+| 04    | 2     | 6min  | 3.0min   |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (4min), 02-03 (8min), 03-01 (12min), 04-01 (4min)
-- Trend: Phase 4 first plan efficient with pure logic/rendering, no UI integration yet
+- Last 5 plans: 02-03 (8min), 03-01 (12min), 04-01 (4min), 04-02 (2min)
+- Trend: Phase 4 fast execution, pure logic + UI integration both efficient
 
 *Updated after each plan completion*
 
@@ -77,6 +77,9 @@ Recent decisions affecting current work:
 - **[04-01]** Sample count = canvas width (1 sample per pixel column) — Produces smooth curves without oversample cost
 - **[04-01]** Render null when not visible instead of hiding with CSS — Avoids unnecessary canvas rendering and memory allocation
 - **[04-01]** Hardcoded viewport bounds (-10 to 10) for Phase 4 — Zoom and pan functionality deferred to Phase 5
+- **[04-02]** Graph input uses native HTML input, keyboard hook already ignores focused inputs — No conflict with calculator keyboard handling
+- **[04-02]** Separate graphInputValue from graphExpression — Graph only re-renders on explicit Plot action, not every keystroke
+- **[04-02]** Enter key in graph input triggers plot — User convenience, matches common form submission pattern
 
 ### Pending Todos
 
@@ -93,15 +96,15 @@ None yet.
 - ~~Implicit multiplication policy: Test if mathjs supports "2π" or requires "2*π" (affects tokenizer design)~~ — RESOLVED: mathjs supports implicit multiplication natively (tested: "2(3)" works)
 - History serialization: Design schema for storing expressions with mode metadata
 
-**Research findings to address in Phase 4 planning:**
+**Research findings to address in Phase 5 planning:**
 - Graphing performance: Define performance budget and test adaptive sampling for complex functions
 - Axis scaling algorithm: Need auto-scale based on function range sampling
 
 ## Session Continuity
 
-Last session: 2026-02-20
-Stopped at: Completed 04-01-PLAN.md — Graph rendering engine and GraphPanel component
-Resume file: .planning/phases/04-graphing-core/04-01-SUMMARY.md
+Last session: 2026-02-21
+Stopped at: Completed Phase 4 execution — Graph rendering engine + UI integration
+Resume file: .planning/phases/04-graphing-core/04-02-SUMMARY.md
 
 ## Phase Completion Status
 
@@ -118,8 +121,8 @@ Resume file: .planning/phases/04-graphing-core/04-01-SUMMARY.md
 **Phase 03: Scientific UI Panel** - ✓ COMPLETE
 - 03-01: Scientific toggle panel with function buttons ✓
 
-**Phase 04: Graphing Core** - IN PROGRESS
+**Phase 04: Graphing Core** - ✓ COMPLETE
 - 04-01: Graph rendering engine and GraphPanel component ✓
-- 04-02: Integrate graphing into Calculator component (next)
+- 04-02: Graph UI integration (input field, plot/clear, angle mode) ✓
 
-**Next:** Complete Phase 04-02
+**Next:** Phase 05 (to be planned)
