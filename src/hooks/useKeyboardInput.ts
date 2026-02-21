@@ -44,7 +44,8 @@ export function useKeyboardInput(onButtonClick: (value: string) => void) {
         '/': '/',
         // Special
         'Enter': 'Enter',  // Changed from '=' to allow autocomplete to intercept
-        'Escape': 'C',
+        'Escape': 'C',     // Clear All
+        'Delete': 'CE',    // Clear Entry
         // Decimal
         '.': '.',
         // Arrow keys for cursor movement (expression mode) and autocomplete navigation

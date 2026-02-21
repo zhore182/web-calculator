@@ -184,7 +184,23 @@ function App() {
   }, [expression, cursorPosition, typingBuffer, angleMode]);
 
   const handleButtonClick = useCallback((value: string) => {
-    // Handle clear input (always works, even from Error state)
+    // Handle CE (Clear Entry) - clears current input while preserving operation
+    if (value === 'CE') {
+      if (expressionMode === 'expression') {
+        // CE in expression mode: clear expression, keep last display value
+        setExpression('');
+        setCursorPosition(0);
+        setPreviewResult('');
+        // Do NOT reset displayValue — keep last result visible
+      } else {
+        // CE in simple mode: reset display to '0' but preserve previousValue and operator
+        setDisplayValue('0');
+        setWaitingForOperand(false);
+      }
+      return;
+    }
+
+    // Handle C (Clear All) - full reset
     if (value === 'C') {
       if (expressionMode === 'expression') {
         setExpression('');

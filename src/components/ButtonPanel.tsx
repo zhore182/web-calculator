@@ -7,7 +7,7 @@ export interface ButtonPanelProps {
 export function ButtonPanel({ onButtonClick }: ButtonPanelProps) {
   const buttonLayout = [
     ['MC', 'MR', 'M-', 'M+'],
-    ['C',  '',   '',   '/'],
+    ['C',  'CE', '',   '/'],
     ['7',  '8',  '9',  '*'],
     ['4',  '5',  '6',  '-'],
     ['1',  '2',  '3',  '+'],
@@ -19,7 +19,7 @@ export function ButtonPanel({ onButtonClick }: ButtonPanelProps) {
     if (['MC','MR','M-','M+'].includes(label)) return 'btn--memory';
     if (['/','*','-','+'].includes(label)) return 'btn--operator';
     if (label === '=') return 'btn--equals';
-    if (label === 'C') return 'btn--clear';
+    if (label === 'C' || label === 'CE') return 'btn--clear';
     return '';
   };
 
