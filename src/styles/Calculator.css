@@ -404,6 +404,46 @@
   margin-top: 12px;
   border-top: 1px solid #3a3a3a;
   padding-top: 12px;
+  position: relative;
+}
+
+.graph-panel__controls {
+  position: absolute;
+  top: 16px;
+  right: 8px;
+  z-index: 10;
+  display: flex;
+  gap: 4px;
+  background: rgba(30, 30, 30, 0.7);
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.graph-panel__control-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.graph-panel__control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.graph-panel__control-btn:active {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .graph-panel__canvas {
@@ -412,6 +452,11 @@
   border-radius: 6px;
   background: #1a1a1a;
   display: block;
+  cursor: grab;
+}
+
+.graph-panel__canvas--dragging {
+  cursor: grabbing;
 }
 
 /* History Panel */
@@ -540,6 +585,11 @@
   .graph-panel__canvas {
     height: 180px;
   }
+
+  .graph-panel__controls {
+    top: 18px;
+    right: 6px;
+  }
 }
 
 /* Phone breakpoint */
@@ -641,6 +691,17 @@
   .graph-panel__canvas {
     height: 160px;
   }
+
+  .graph-panel__controls {
+    top: 16px;
+    right: 4px;
+  }
+
+  .graph-panel__control-btn {
+    width: 22px;
+    height: 22px;
+    font-size: 0.9rem;
+  }
 }
 
 /* Narrow phone breakpoint */
@@ -709,5 +770,18 @@
 
   .graph-panel__canvas {
     height: 140px;
+  }
+
+  .graph-panel__controls {
+    top: 14px;
+    right: 3px;
+    padding: 3px;
+    gap: 3px;
+  }
+
+  .graph-panel__control-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 0.85rem;
   }
 }
