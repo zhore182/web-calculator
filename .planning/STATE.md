@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** The calculator must correctly evaluate mathematical expressions — from simple arithmetic to scientific functions — and display results clearly.
-**Current focus:** Phase 6 - UX Polish (In Progress)
+**Current focus:** Phase 6 - UX Polish (Complete)
 
 ## Current Position
 
 Phase: 6 of 6 (UX Polish)
-Plan: 1 of 2 in current phase
-Status: In Progress
-Last activity: 2026-02-21 — Completed Phase 6 Plan 01 (Scientific notation and CE/C split)
+Plan: 2 of 2 in current phase
+Status: Complete
+Last activity: 2026-02-21 — Completed Phase 6 (Scientific notation, CE/C, clipboard, keyboard shortcuts)
 
-Progress: [█████████░] ~92% (Phase 6: 1/2 plans complete)
+Progress: [██████████] 100% (All 6 phases complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
-- Average duration: 4.6 minutes
-- Total execution time: 0.9 hours
+- Total plans completed: 13
+- Average duration: 4.5 minutes
+- Total execution time: 1.0 hours
 
 **By Phase:**
 
@@ -32,10 +32,10 @@ Progress: [█████████░] ~92% (Phase 6: 1/2 plans complete)
 | 03    | 1     | 12min | 12.0min  |
 | 04    | 2     | 6min  | 3.0min   |
 | 05    | 2     | 9min  | 4.8min   |
-| 06    | 1     | 2min  | 2.0min   |
+| 06    | 2     | 5min  | 2.5min   |
 
 **Recent Trend:**
-- Last 5 plans: 04-02 (2min), 05-01 (5.5min), 05-02 (4min), 06-01 (2min)
+- Last 5 plans: 05-01 (5.5min), 05-02 (4min), 06-01 (2min), 06-02 (3min)
 - Trend: Fast execution for polish tasks
 
 *Updated after each plan completion*
@@ -93,6 +93,10 @@ Recent decisions affecting current work:
 - **[06-01]** Scientific notation threshold at |value| >= 1e12 or |value| < 1e-6 — Aligns with 12-digit toPrecision limit, numbers requiring >12 digits go to scientific notation
 - **[06-01]** CE (Clear Entry) preserves pending operation, C (Clear All) resets everything — Two-level clearing provides granular control
 - **[06-01]** Delete key maps to CE, Escape to C — Intuitive keyboard mapping for two clearing levels
+- **[06-02]** Ctrl/Cmd+C/V intercepted before modifier guard — Allows copy/paste while blocking other Ctrl combos
+- **[06-02]** Copy targets previewResult if available, else displayValue — Copies most relevant value
+- **[06-02]** Pasted text sanitized to math characters only — Prevents non-math content injection
+- **[06-02]** ^, !, % mapped directly in keyMap — Shift+number produces these natively, no special handling
 
 ### Pending Todos
 
@@ -112,8 +116,8 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed Phase 6 Plan 01 — Scientific notation and CE/C split
-Resume file: .planning/phases/06-ux-polish/06-01-SUMMARY.md
+Stopped at: Completed all 6 phases — Milestone v1.0 complete
+Resume file: .planning/phases/06-ux-polish/06-02-SUMMARY.md
 
 ## Phase Completion Status
 
@@ -138,6 +142,8 @@ Resume file: .planning/phases/06-ux-polish/06-01-SUMMARY.md
 - 05-01: Graph zoom and pan interactions ✓
 - 05-02: Trace and function table ✓
 
-**Phase 06: UX Polish** - IN PROGRESS
+**Phase 06: UX Polish** - ✓ COMPLETE
 - 06-01: Scientific notation and CE/C split ✓
-- 06-02: (to be planned)
+- 06-02: Clipboard copy/paste and keyboard shortcuts ✓
+
+**All phases complete — Milestone v1.0 ready for /gsd:complete-milestone**
