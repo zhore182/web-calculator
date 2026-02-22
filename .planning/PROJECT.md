@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A web-based scientific calculator with graphing capabilities. Started as a basic four-function calculator with memory and history, now evolving into a full scientific calculator with expression input and function plotting. Built as a client-side React app — no backend needed.
+A web-based scientific calculator with graphing capabilities. Features PEMDAS expression input, 20+ scientific functions with DEG/RAD angle modes, a toggle panel UI, Canvas-based 2D function graphing with zoom/pan/trace, and full keyboard support. Built as a client-side React app — no backend needed.
 
 ## Core Value
 
@@ -20,58 +20,64 @@ The calculator must correctly evaluate mathematical expressions — from simple 
 - ✓ Keyboard input support (digits, operators, Enter, Escape) — existing
 - ✓ Clear/reset functionality — existing
 - ✓ Responsive design (desktop, tablet, mobile) — existing
+- ✓ Scientific functions (sin, cos, tan, log, ln, sqrt, powers, factorial, pi, e) — v1.0
+- ✓ Toggle panel for scientific buttons (slide-out, keeps basic view clean) — v1.0
+- ✓ DEG/RAD angle mode toggle for trig functions — v1.0
+- ✓ Expression input mode with parentheses and proper order of operations — v1.0
+- ✓ Mode toggle between simple (left-to-right) and expression input — v1.0
+- ✓ Function plotting (y=f(x)) as inline panel below/beside calculator — v1.0
+- ✓ Graph input field for entering function expressions — v1.0
+- ✓ Graph zoom, pan, trace coordinates, function table — v1.0
+- ✓ Scientific notation for extreme numbers — v1.0
+- ✓ CE/C clear split — v1.0
+- ✓ Clipboard copy/paste — v1.0
+- ✓ Keyboard shortcuts for scientific operators — v1.0
 
 ### Active
 
-- [ ] Scientific functions (sin, cos, tan, log, ln, sqrt, powers, factorial, pi, e)
-- [ ] Toggle panel for scientific buttons (slide-out, keeps basic view clean)
-- [ ] DEG/RAD angle mode toggle for trig functions
-- [ ] Expression input mode with parentheses and proper order of operations
-- [ ] Mode toggle between simple (left-to-right) and expression input
-- [ ] Function plotting (y=f(x)) as inline panel below/beside calculator
-- [ ] Graph input field for entering function expressions
+(None — next milestone requirements defined via `/gsd:new-milestone`)
 
 ### Out of Scope
 
 - Engineering functions (hex/oct/bin, bitwise, unit conversions) — not needed for standard scientific
 - Gradians angle mode — DEG/RAD covers vast majority of use cases
-- Multiple function overlay on graphs — single function at a time for v1
-- Zoom/pan on graphs — keep graphing simple for v1
 - Mobile app — web-first
 - Backend/server — client-side only
+- Computer Algebra System (CAS) — enormous complexity, different product category
+- 3D graphing — requires WebGL, high complexity, niche need
+- Matrix operations — complex UI, different calculator mode
+- Equation solver — symbolic algebra, different UI paradigm
+- Cloud sync — privacy concerns, auth complexity, backend required
+- Voice/handwriting input — accuracy issues, unnecessary complexity
+- Step-by-step solutions — CAS-level complexity, different product
 
 ## Context
 
-Brownfield project with a solid React + TypeScript + Vite foundation. Architecture separates pure logic functions from components, which should extend cleanly for scientific operations. The existing `CalculatorState` interface and handler pattern (pure functions accepting state, returning new state) will need expansion for expression parsing and scientific functions.
-
-Key existing patterns to preserve:
-- Pure functions in `src/logic/` for all business logic
-- Centralized state in `App.tsx`
-- `useCallback` for stable handler references
-- Co-located test files (`*.test.ts`)
-- BEM-like CSS naming in single stylesheet
-
-Known concerns from codebase map:
-- Floating-point precision uses `toPrecision(12)` — may need attention for scientific functions
-- No operator precedence currently (left-to-right only) — expression mode will address this
-- Test coverage gaps in inputHandlers, memoryHandlers, historyHandlers
+Shipped v1.0 with 5,454 LOC TypeScript/CSS. 192 tests passing.
+Tech stack: React 19, TypeScript, Vite, Vitest, mathjs, Canvas API.
+Architecture: pure logic functions in `src/logic/`, centralized state in App.tsx, BEM-like CSS.
 
 ## Constraints
 
 - **Tech stack**: React 19 + TypeScript + Vite (existing, no changes)
 - **No new backend**: Must remain a client-side SPA
-- **No heavy dependencies**: Prefer lightweight or zero-dependency solutions for math parsing and graphing
+- **No heavy dependencies**: Prefer lightweight or zero-dependency solutions
 - **Browser support**: Modern browsers with ES2022 support
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Toggle panel for scientific buttons | Keeps basic calculator clean; users who don't need science mode aren't overwhelmed | — Pending |
-| Both simple + expression input modes | Preserves familiar basic experience while enabling full expression capability | — Pending |
-| DEG/RAD only (no gradians) | Covers 99% of use cases, simpler UI | — Pending |
-| Inline graph panel | Graph stays in context with calculator, no navigation needed | — Pending |
-| Single function plot (no multi-overlay) | Keeps graphing scope manageable for v1 | — Pending |
+| Toggle panel for scientific buttons | Keeps basic calculator clean | ✓ Good — responsive slide-out works well |
+| Both simple + expression input modes | Preserves familiar basic experience | ✓ Good — seamless mode switching |
+| DEG/RAD only (no gradians) | Covers 99% of use cases | ✓ Good — simpler UI |
+| Inline graph panel | Graph stays in context with calculator | ✓ Good — no navigation needed |
+| Single function plot (no multi-overlay) | Keeps graphing scope manageable for v1 | ✓ Good — clean UX |
+| mathjs for expression evaluation | Battle-tested PEMDAS, implicit multiplication | ✓ Good — zero custom parser bugs |
+| toPrecision(12) + parseFloat formatting | Addresses floating-point precision | ✓ Good — 0.1+0.2=0.3 works |
+| Canvas API for graphing | No extra dependency, full control | ✓ Good — smooth rendering |
+| Zoom preserves cursor position | Better UX for exploring graph regions | ✓ Good — intuitive behavior |
+| Scientific notation at 1e12/1e-6 thresholds | Aligns with 12-digit precision limit | ✓ Good — clean display |
 
 ---
-*Last updated: 2026-02-14 after initialization*
+*Last updated: 2026-02-22 after v1.0 milestone*
