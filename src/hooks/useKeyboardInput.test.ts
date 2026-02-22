@@ -65,6 +65,30 @@ describe('useKeyboardInput', () => {
       expect(onButtonClick).toHaveBeenCalledWith('.');
       expect(onButtonClick).toHaveBeenCalledTimes(1);
     });
+
+    it('maps ^ key for exponentiation', () => {
+      renderHook(() => useKeyboardInput(onButtonClick));
+
+      dispatchKey({ key: '^' });
+      expect(onButtonClick).toHaveBeenCalledWith('^');
+      expect(onButtonClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('maps ! key for factorial', () => {
+      renderHook(() => useKeyboardInput(onButtonClick));
+
+      dispatchKey({ key: '!' });
+      expect(onButtonClick).toHaveBeenCalledWith('!');
+      expect(onButtonClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('maps % key for percentage', () => {
+      renderHook(() => useKeyboardInput(onButtonClick));
+
+      dispatchKey({ key: '%' });
+      expect(onButtonClick).toHaveBeenCalledWith('%');
+      expect(onButtonClick).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('guards', () => {
@@ -75,10 +99,20 @@ describe('useKeyboardInput', () => {
       expect(onButtonClick).not.toHaveBeenCalled();
     });
 
-    it('ignores events with Ctrl modifier', () => {
+    it('handles Ctrl+C as copy and Ctrl+V as paste', () => {
       renderHook(() => useKeyboardInput(onButtonClick));
 
       dispatchKey({ key: 'c', ctrlKey: true });
+      expect(onButtonClick).toHaveBeenCalledWith('copy');
+
+      dispatchKey({ key: 'v', ctrlKey: true });
+      expect(onButtonClick).toHaveBeenCalledWith('paste');
+    });
+
+    it('ignores other Ctrl modifier combos', () => {
+      renderHook(() => useKeyboardInput(onButtonClick));
+
+      dispatchKey({ key: 'z', ctrlKey: true });
       expect(onButtonClick).not.toHaveBeenCalled();
     });
 
