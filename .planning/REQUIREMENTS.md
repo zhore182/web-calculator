@@ -64,25 +64,25 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INTG-01 | — | Pending |
-| INTG-02 | — | Pending |
-| INTG-03 | — | Pending |
-| INTG-04 | — | Pending |
-| INTG-05 | — | Pending |
-| MGRPH-01 | — | Pending |
-| MGRPH-02 | — | Pending |
-| MGRPH-03 | — | Pending |
-| MGRPH-04 | — | Pending |
-| VIS-01 | — | Pending |
-| VIS-02 | — | Pending |
-| VIS-03 | — | Pending |
-| VIS-04 | — | Pending |
+| INTG-01 | Phase 8 | Pending |
+| INTG-02 | Phase 9 | Pending |
+| INTG-03 | Phase 8 | Pending |
+| INTG-04 | Phase 8 | Pending |
+| INTG-05 | Phase 9 | Pending |
+| MGRPH-01 | Phase 10 | Pending |
+| MGRPH-02 | Phase 10 | Pending |
+| MGRPH-03 | Phase 10 | Pending |
+| MGRPH-04 | Phase 10 | Pending |
+| VIS-01 | Phase 7 | Pending |
+| VIS-02 | Phase 8 | Pending |
+| VIS-03 | Phase 11 | Pending |
+| VIS-04 | Phase 11 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 13 total
-- Mapped to phases: 0
-- Unmapped: 13
+- Mapped to phases: 13
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-22*
-*Last updated: 2026-02-22 after initial definition*
+*Last updated: 2026-02-22 after roadmap creation*
