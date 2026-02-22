@@ -35,7 +35,11 @@ The calculator must correctly evaluate mathematical expressions — from simple 
 
 ### Active
 
-(None — next milestone requirements defined via `/gsd:new-milestone`)
+- [ ] Unified calc/graph input — one input field with mode switch, no separate graph input
+- [ ] Auto-plot on mode switch — switching to graph mode auto-plots current expression if graphable
+- [ ] Graph fills main area — graph replaces button panel in graph mode, expression display stays on top
+- [ ] Multi-function plotting — multiple functions with different colors, add/remove
+- [ ] Full visual redesign — modern layout, color palette, typography, spacing, animations
 
 ### Out of Scope
 
@@ -51,11 +55,23 @@ The calculator must correctly evaluate mathematical expressions — from simple 
 - Voice/handwriting input — accuracy issues, unnecessary complexity
 - Step-by-step solutions — CAS-level complexity, different product
 
+## Current Milestone: v1.1 Graphing Calculator Integration + Redesign
+
+**Goal:** Unify the calculator and graph into a seamless graphing calculator experience with a modern visual redesign.
+
+**Target features:**
+- Unified input with calc/graph mode switch
+- Auto-plot current expression when entering graph mode
+- Graph fills main area (replaces buttons) in graph mode
+- Multi-function plotting with different colors
+- Full visual redesign (modern layout, colors, typography, animations)
+
 ## Context
 
 Shipped v1.0 with 5,454 LOC TypeScript/CSS. 192 tests passing.
 Tech stack: React 19, TypeScript, Vite, Vitest, mathjs, Canvas API.
 Architecture: pure logic functions in `src/logic/`, centralized state in App.tsx, BEM-like CSS.
+v1.1 focus: Calculator and graph currently feel like separate tools — need to unify into one cohesive graphing calculator experience.
 
 ## Constraints
 
@@ -80,4 +96,4 @@ Architecture: pure logic functions in `src/logic/`, centralized state in App.tsx
 | Scientific notation at 1e12/1e-6 thresholds | Aligns with 12-digit precision limit | ✓ Good — clean display |
 
 ---
-*Last updated: 2026-02-22 after v1.0 milestone*
+*Last updated: 2026-02-22 after v1.1 milestone start*

@@ -5,13 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** The calculator must correctly evaluate mathematical expressions — from simple arithmetic to scientific functions — and display results clearly.
-**Current focus:** Planning next milestone
+**Current focus:** Milestone v1.1 — Graphing Calculator Integration + Redesign
 
 ## Current Position
 
-Milestone: v1.0 shipped 2026-02-22
-Status: Between milestones
-Last activity: 2026-02-22 — Completed v1.0 milestone (archived, tagged)
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-02-22 — Milestone v1.1 started
 
 ## Accumulated Context
 
@@ -30,5 +31,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed v1.0 milestone archival
-Resume file: .planning/MILESTONES.md
+Stopped at: Milestone v1.1 initialization
+Resume file: .planning/PROJECT.md
