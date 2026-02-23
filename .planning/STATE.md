@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-22)
 ## Current Position
 
 Phase: 8 of 11 (Layout Integration)
-Plan: 0 of 1 in current phase — Ready to execute
+Plan: 1 of 1 in current phase — At checkpoint (awaiting human verify)
 Status: Executing
-Last activity: 2026-02-23 — Planned 08-01 (Mode toggle + conditional layout)
+Last activity: 2026-02-23 — Executing 08-01 (Mode toggle + conditional layout)
 
 Progress: [████████░░] 63% (15/24 total plans completed)
 
@@ -55,6 +55,10 @@ Recent decisions affecting current work:
 - 07-01: CSS custom properties over CSS-in-JS — minimal footprint, browser-native
 - 07-01: Semantic color naming over descriptive — easier to theme, clearer intent
 - 07-01: 4px spacing base unit — aligns with existing design, industry standard
+- 08-01: Unified onModeSelect callback — single handler for all three mode options is cleaner API
+- 08-01: appMode state in App.tsx — Calculator.tsx stays as display component forwarding callbacks
+- 08-01: Graph mode auto-switches to expression mode — natural companion to graphing
+- 08-01: CSS scoped to .calculator--graph-mode — existing calc-mode styles untouched
 
 ### Pending Todos
 
@@ -67,6 +71,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-23
-Stopped at: Phase 8 planned (08-01 verified, ready to execute)
+Stopped at: 08-01 Task 3 checkpoint (human-verify mode toggle and layout)
 Resume file: None
-Next action: `/gsd:execute-phase 8`
+Next action: Verify app at http://localhost:5173, then type "approved" to continue
