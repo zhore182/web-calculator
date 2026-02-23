@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** The calculator must correctly evaluate mathematical expressions — from simple arithmetic to scientific functions — and display results clearly.
-**Current focus:** Phase 8: Layout Integration
+**Current focus:** Phase 9: Auto-Plot & Controls
 
 ## Current Position
 
-Phase: 8 of 11 (Layout Integration) — COMPLETE
-Plan: 1 of 1 in current phase — Complete
-Status: Ready for Phase 9
-Last activity: 2026-02-23 — Completed 08-01 (Mode toggle + conditional layout + UX fixes)
+Phase: 9 of 11 (Auto-Plot & Controls) — Not started
+Plan: 0 of TBD in current phase
+Status: Ready to plan Phase 9
+Last activity: 2026-02-23 — Approved Phase 8 (Layout Integration) — mode toggle + graph layout working
 
-Progress: [████████░░] 67% (16/24 total plans completed)
+Progress: [████████░░] 70% (phases 1-8 complete, 3 remaining)
 
 ## Performance Metrics
 
@@ -74,6 +74,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-23
-Stopped at: Completed 08-01-PLAN.md
+Stopped at: Phase 8 human verification approved
 Resume file: None
-Next action: Begin Phase 9 (Expression Input enhancements)
+Next action: Plan Phase 9 (Auto-Plot & Controls)

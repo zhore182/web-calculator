@@ -65,35 +65,20 @@ Plans:
 
 **Milestone Goal:** Unify the calculator and graph into a seamless graphing calculator experience with a modern visual redesign.
 
-#### Phase 7: Visual Design System
+#### ✅ Phase 7: Visual Design System — COMPLETE 2026-02-22
 **Goal**: Establish a modern design foundation for all UI components
-**Depends on**: Phase 6
-**Requirements**: VIS-01
-**Success Criteria** (what must be TRUE):
-  1. Calculator uses consistent color palette across all UI elements
-  2. Typography hierarchy is clear and readable at all screen sizes
-  3. Spacing and border radius follow defined design tokens
-  4. Design system is documented and reusable for future components
 **Plans**: 2 plans
 
 Plans:
-- [ ] 07-01-PLAN.md — Create design tokens and refactor all CSS to use them
-- [ ] 07-02-PLAN.md — Visual verification of design system (checkpoint)
+- [x] 07-01-PLAN.md — Create design tokens and refactor all CSS to use them
+- [x] 07-02-PLAN.md — Visual verification of design system (checkpoint)
 
-#### Phase 8: Layout Integration
+#### ✅ Phase 8: Layout Integration — COMPLETE 2026-02-23
 **Goal**: Users can switch between calculator and graph modes with graph filling the main area
-**Depends on**: Phase 7
-**Requirements**: INTG-01, INTG-03, INTG-04, VIS-02
-**Success Criteria** (what must be TRUE):
-  1. User can toggle between calculator mode and graph mode via a single control
-  2. Graph fills the main area (replacing button panel) in graph mode
-  3. Expression display remains visible on top in graph mode
-  4. Layout maintains clear visual hierarchy in both modes
-  5. Mode switch is visually obvious and accessible
 **Plans**: 1 plan
 
 Plans:
-- [ ] 08-01-PLAN.md — Mode toggle, conditional layout, graph fills main area
+- [x] 08-01-PLAN.md — Mode toggle, conditional layout, graph fills main area
 
 #### Phase 9: Auto-Plot & Controls
 **Goal**: Users can seamlessly transition to graphing with automatic plotting and accessible controls
@@ -151,8 +136,8 @@ Phases execute in numeric order: 7 → 8 → 9 → 10 → 11
 | 4. Graphing Core | v1.0 | 2/2 | Complete | 2026-02-21 |
 | 5. Graphing Interactions | v1.0 | 2/2 | Complete | 2026-02-21 |
 | 6. UX Polish | v1.0 | 2/2 | Complete | 2026-02-21 |
-| 7. Visual Design System | v1.1 | 0/TBD | Not started | - |
-| 8. Layout Integration | v1.1 | 0/1 | Not started | - |
+| 7. Visual Design System | v1.1 | 2/2 | Complete | 2026-02-22 |
+| 8. Layout Integration | v1.1 | 1/1 | Complete | 2026-02-23 |
 | 9. Auto-Plot & Controls | v1.1 | 0/TBD | Not started | - |
 | 10. Multi-Function Plotting | v1.1 | 0/TBD | Not started | - |
 | 11. Animation & Polish | v1.1 | 0/TBD | Not started | - |
