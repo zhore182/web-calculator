@@ -70,6 +70,10 @@ export function useKeyboardInput(onButtonClick: (value: string) => void) {
         // Parentheses
         '(': '(',
         ')': ')',
+        // Scientific operators
+        '^': '^',    // Shift+6 for exponentiation
+        '!': '!',    // Shift+1 for factorial
+        '%': '%',    // Shift+5 for percentage
       };
 
       // Look up key in map and call handler if found

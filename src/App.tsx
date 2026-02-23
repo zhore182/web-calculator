@@ -56,6 +56,13 @@ function App() {
   const hasMemory = memoryValue !== 0;
   const historyLoadedRef = useRef(false);
 
+  // In graph mode, keep graphExpression synced with the expression as user types
+  useEffect(() => {
+    if (appMode === 'graph' && expression) {
+      setGraphExpression(expression);
+    }
+  }, [appMode, expression]);
+
   // Load history from localStorage on mount
   useEffect(() => {
     setHistoryEntries(loadHistory());
@@ -111,6 +118,7 @@ function App() {
     } else {
       // mode is 'simple' or 'expression' — switch back to calc mode
       setAppMode('calc');
+      setGraphVisible(false);  // Hide graph when leaving graph mode
       setExpressionMode(mode);
       if (mode === 'expression') {
         setExpression('');
