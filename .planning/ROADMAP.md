@@ -74,10 +74,11 @@ Plans:
   2. Typography hierarchy is clear and readable at all screen sizes
   3. Spacing and border radius follow defined design tokens
   4. Design system is documented and reusable for future components
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: TBD
+- [ ] 07-01-PLAN.md — Create design tokens and refactor all CSS to use them
+- [ ] 07-02-PLAN.md — Visual verification of design system (checkpoint)
 
 #### Phase 8: Layout Integration
 **Goal**: Users can switch between calculator and graph modes with graph filling the main area
