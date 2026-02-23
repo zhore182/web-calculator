@@ -1,0 +1,94 @@
+/**
+ * Design Tokens
+ *
+ * Foundation for the visual design system.
+ * All UI components should reference these tokens instead of hardcoded values.
+ */
+
+:root {
+  /* ===== COLOR PALETTE ===== */
+
+  /* Surface colors */
+  --color-bg-primary: #1a1a1a;
+  --color-bg-secondary: #2c2c2c;
+  --color-bg-tertiary: #3a3a3a;
+  --color-bg-elevated: #4a4a4a;
+
+  /* Text colors */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #aaa;
+  --color-text-muted: #888;
+  --color-text-disabled: #666;
+
+  /* Accent colors */
+  --color-accent-primary: #4a9eff;
+  --color-accent-secondary: #ff9500;
+  --color-accent-danger: #ff6b6b;
+
+  /* Button colors */
+  --color-btn-default: #4a4a4a;
+  --color-btn-default-hover: #5a5a5a;
+  --color-btn-default-active: #3a3a3a;
+  --color-btn-operator: #ff9500;
+  --color-btn-operator-hover: #ffaa33;
+  --color-btn-clear: #a5a5a5;
+  --color-btn-clear-hover: #b5b5b5;
+  --color-btn-memory: #3a5a3a;
+  --color-btn-memory-hover: #4a6a4a;
+  --color-btn-scientific: #3a4a5a;
+  --color-btn-scientific-hover: #4a5a6a;
+  --color-btn-scientific-active: #2a3a4a;
+
+  /* Display colors */
+  --color-display-bg: #4a5a3a;
+  --color-display-text: #1a1a1a;
+
+  /* Graph colors */
+  --color-graph-bg: #1a1a1a;
+  --color-graph-plot: #4a9eff;
+
+  /* ===== TYPOGRAPHY ===== */
+
+  /* Font families */
+  --font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono: 'Courier New', monospace;
+
+  /* Font sizes */
+  --font-size-xs: 0.7rem;
+  --font-size-sm: 0.8rem;
+  --font-size-md: 0.9rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.5rem;
+
+  /* ===== SPACING ===== */
+
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 10px;
+  --space-5: 12px;
+  --space-6: 16px;
+  --space-7: 20px;
+  --space-8: 24px;
+
+  /* ===== BORDER RADIUS ===== */
+
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-base: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* ===== SHADOWS ===== */
+
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+  /* ===== TRANSITIONS ===== */
+
+  --transition-fast: 0.1s;
+  --transition-normal: 0.15s;
+  --transition-slow: 0.25s;
+}
