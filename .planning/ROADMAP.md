@@ -90,10 +90,10 @@ Plans:
   3. Expression display remains visible on top in graph mode
   4. Layout maintains clear visual hierarchy in both modes
   5. Mode switch is visually obvious and accessible
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 08-01: TBD
+- [ ] 08-01-PLAN.md — Mode toggle, conditional layout, graph fills main area
 
 #### Phase 9: Auto-Plot & Controls
 **Goal**: Users can seamlessly transition to graphing with automatic plotting and accessible controls
@@ -152,7 +152,7 @@ Phases execute in numeric order: 7 → 8 → 9 → 10 → 11
 | 5. Graphing Interactions | v1.0 | 2/2 | Complete | 2026-02-21 |
 | 6. UX Polish | v1.0 | 2/2 | Complete | 2026-02-21 |
 | 7. Visual Design System | v1.1 | 0/TBD | Not started | - |
-| 8. Layout Integration | v1.1 | 0/TBD | Not started | - |
+| 8. Layout Integration | v1.1 | 0/1 | Not started | - |
 | 9. Auto-Plot & Controls | v1.1 | 0/TBD | Not started | - |
 | 10. Multi-Function Plotting | v1.1 | 0/TBD | Not started | - |
 | 11. Animation & Polish | v1.1 | 0/TBD | Not started | - |
