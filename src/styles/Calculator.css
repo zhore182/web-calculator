@@ -605,6 +605,32 @@
   font-family: var(--font-family-mono);
 }
 
+/* Graph mode layout */
+.calculator--graph-mode {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px; /* Same width as calculator mode for consistency */
+}
+
+.calculator__graph-main {
+  flex: 1;
+  min-height: 280px;
+  margin-top: var(--space-3);
+}
+
+/* In graph mode, the graph panel should not have top margin/border — it IS the main content */
+.calculator--graph-mode .graph-panel {
+  margin-top: 0;
+  border-top: none;
+  padding-top: 0;
+}
+
+/* Graph canvas fills the container in graph mode */
+.calculator--graph-mode .graph-panel__canvas {
+  height: 100%;
+  min-height: 280px;
+}
+
 /* Tablet breakpoint */
 @media (min-width: 481px) and (max-width: 768px) {
   .calculator {
@@ -663,6 +689,14 @@
 
 /* Phone breakpoint */
 @media (max-width: 480px) {
+  .calculator--graph-mode .calculator__graph-main {
+    min-height: 220px;
+  }
+
+  .calculator--graph-mode .graph-panel__canvas {
+    min-height: 220px;
+  }
+
   .calculator {
     max-width: 100%;
     border-radius: var(--radius-lg);
@@ -781,6 +815,14 @@
 
 /* Narrow phone breakpoint */
 @media (max-width: 340px) {
+  .calculator--graph-mode .calculator__graph-main {
+    min-height: 200px;
+  }
+
+  .calculator--graph-mode .graph-panel__canvas {
+    min-height: 200px;
+  }
+
   .calculator {
     padding: var(--space-3);
   }
