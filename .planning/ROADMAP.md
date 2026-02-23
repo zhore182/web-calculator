@@ -89,10 +89,10 @@ Plans:
   2. Graph controls (zoom, pan, trace) are accessible as overlays in graph mode
   3. Controls do not obscure the graph or expression display
   4. User can interact with controls without leaving graph mode
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 09-01: TBD
+- [ ] 09-01-PLAN.md — x-variable detection for auto-plot, control overlay polish, accessibility
 
 #### Phase 10: Multi-Function Plotting
 **Goal**: Users can plot and manage multiple functions simultaneously on the same graph
@@ -138,6 +138,6 @@ Phases execute in numeric order: 7 → 8 → 9 → 10 → 11
 | 6. UX Polish | v1.0 | 2/2 | Complete | 2026-02-21 |
 | 7. Visual Design System | v1.1 | 2/2 | Complete | 2026-02-22 |
 | 8. Layout Integration | v1.1 | 1/1 | Complete | 2026-02-23 |
-| 9. Auto-Plot & Controls | v1.1 | 0/TBD | Not started | - |
+| 9. Auto-Plot & Controls | v1.1 | 0/1 | Not started | - |
 | 10. Multi-Function Plotting | v1.1 | 0/TBD | Not started | - |
 | 11. Animation & Polish | v1.1 | 0/TBD | Not started | - |
