@@ -21,7 +21,7 @@ export interface CalculatorProps {
   expression: string;
   cursorPosition: number;
   previewResult: string;
-  onModeChange: (mode: ExpressionMode) => void;
+  onModeSelect: (mode: 'simple' | 'expression' | 'graph') => void;
   onExpressionClick?: (position: number) => void;
   angleMode: 'DEG' | 'RAD';
   onAngleModeToggle: () => void;
@@ -31,6 +31,7 @@ export interface CalculatorProps {
   onAutocompleteSelect: (funcName: string) => void;
   scientificPanelOpen: boolean;
   onScientificToggle: () => void;
+  appMode: 'calc' | 'graph';
   graphExpression: string;
   graphInputValue: string;
   graphVisible: boolean;
@@ -53,7 +54,7 @@ export default function Calculator({
   expression,
   cursorPosition,
   previewResult,
-  onModeChange,
+  onModeSelect,
   onExpressionClick,
   angleMode,
   onAngleModeToggle,
@@ -63,6 +64,7 @@ export default function Calculator({
   onAutocompleteSelect,
   scientificPanelOpen,
   onScientificToggle,
+  appMode,
   graphExpression,
   graphInputValue,
   graphVisible,
@@ -79,9 +81,13 @@ export default function Calculator({
     ? previewResult
     : displayValue;
 
-  const calculatorClassName = scientificPanelOpen
-    ? 'calculator calculator--sci-open'
-    : 'calculator';
+  const isGraphMode = appMode === 'graph';
+
+  const calculatorClassName = [
+    'calculator',
+    scientificPanelOpen && !isGraphMode ? 'calculator--sci-open' : '',
+    isGraphMode ? 'calculator--graph-mode' : '',
+  ].filter(Boolean).join(' ');
 
   const toggleClassName = scientificPanelOpen
     ? 'scientific-toggle scientific-toggle--active'
@@ -89,14 +95,20 @@ export default function Calculator({
 
   return (
     <div className={calculatorClassName}>
-      <ModeToggle mode={expressionMode} onModeChange={onModeChange} />
-      <button
-        className={toggleClassName}
-        onClick={onScientificToggle}
-        data-testid="scientific-toggle"
-      >
-        SCI
-      </button>
+      <ModeToggle
+        expressionMode={expressionMode}
+        appMode={appMode}
+        onModeSelect={onModeSelect}
+      />
+      {!isGraphMode && (
+        <button
+          className={toggleClassName}
+          onClick={onScientificToggle}
+          data-testid="scientific-toggle"
+        >
+          SCI
+        </button>
+      )}
       <div style={{ position: 'relative' }}>
         <Display
           value={displayResultValue}
@@ -115,47 +127,65 @@ export default function Calculator({
           visible={autocompleteVisible}
         />
       </div>
-      <div className="calculator__panels">
-        <ScientificPanel
-          onButtonClick={onButtonClick}
-          visible={scientificPanelOpen}
-        />
-        <ButtonPanel onButtonClick={onButtonClick} />
-      </div>
-      <div className="graph-controls">
-        <div className="graph-controls__input-row">
-          <span className="graph-controls__label">y =</span>
-          <input
-            className="graph-controls__input"
-            type="text"
-            value={graphInputValue}
-            onChange={onGraphInputChange}
-            onKeyDown={onGraphInputKeyDown}
-            placeholder="f(x), e.g. sin(x)"
-            data-testid="graph-input"
+      {!isGraphMode && (
+        <div className="calculator__panels">
+          <ScientificPanel
+            onButtonClick={onButtonClick}
+            visible={scientificPanelOpen}
+          />
+          <ButtonPanel onButtonClick={onButtonClick} />
+        </div>
+      )}
+      {!isGraphMode && (
+        <div className="graph-controls">
+          <div className="graph-controls__input-row">
+            <span className="graph-controls__label">y =</span>
+            <input
+              className="graph-controls__input"
+              type="text"
+              value={graphInputValue}
+              onChange={onGraphInputChange}
+              onKeyDown={onGraphInputKeyDown}
+              placeholder="f(x), e.g. sin(x)"
+              data-testid="graph-input"
+            />
+          </div>
+          <div className="graph-controls__buttons">
+            <button className="graph-controls__btn graph-controls__btn--plot" onClick={onGraphPlot}>
+              Plot
+            </button>
+            <button className="graph-controls__btn graph-controls__btn--clear" onClick={onGraphClear}>
+              Clear
+            </button>
+          </div>
+        </div>
+      )}
+      {isGraphMode ? (
+        <div className="calculator__graph-main">
+          <GraphPanel
+            expression={graphExpression}
+            angleMode={angleMode}
+            visible={true}
+            viewport={graphViewport}
+            onViewportChange={onGraphViewportChange}
           />
         </div>
-        <div className="graph-controls__buttons">
-          <button className="graph-controls__btn graph-controls__btn--plot" onClick={onGraphPlot}>
-            Plot
-          </button>
-          <button className="graph-controls__btn graph-controls__btn--clear" onClick={onGraphClear}>
-            Clear
-          </button>
-        </div>
-      </div>
-      <GraphPanel
-        expression={graphExpression}
-        angleMode={angleMode}
-        visible={graphVisible}
-        viewport={graphViewport}
-        onViewportChange={onGraphViewportChange}
-      />
-      <HistoryPanel
-        entries={historyEntries}
-        onClear={onHistoryClear}
-        onEntryClick={onHistoryEntryClick}
-      />
+      ) : (
+        <GraphPanel
+          expression={graphExpression}
+          angleMode={angleMode}
+          visible={graphVisible}
+          viewport={graphViewport}
+          onViewportChange={onGraphViewportChange}
+        />
+      )}
+      {!isGraphMode && (
+        <HistoryPanel
+          entries={historyEntries}
+          onClear={onHistoryClear}
+          onEntryClick={onHistoryEntryClick}
+        />
+      )}
     </div>
   );
 }

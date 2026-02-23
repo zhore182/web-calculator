@@ -28,6 +28,9 @@ function App() {
   const [memoryValue, setMemoryValue] = useState(0);
   const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
 
+  // App mode state ('calc' | 'graph')
+  const [appMode, setAppMode] = useState<'calc' | 'graph'>('calc');
+
   // Expression mode state
   const [expressionMode, setExpressionMode] = useState<ExpressionMode>('simple');
   const [expression, setExpression] = useState('');        // The expression string being built
@@ -89,23 +92,38 @@ function App() {
     setWaitingForOperand(true);
   }, []);
 
-  const handleModeChange = useCallback((mode: ExpressionMode) => {
-    setExpressionMode(mode);
-    // Per user decision: preserve current value when switching modes
-    // When switching TO expression mode: expression starts empty, display value preserved as result
-    // When switching FROM expression mode: current result becomes display value
-    if (mode === 'expression') {
-      setExpression('');
-      setCursorPosition(0);
-      setPreviewResult(displayValue);
+  // Unified mode select handler — handles all three toggle options
+  const handleModeSelect = useCallback((mode: 'simple' | 'expression' | 'graph') => {
+    if (mode === 'graph') {
+      setAppMode('graph');
+      setGraphVisible(true);
+      // Switch to expression mode as natural companion to graphing
+      if (expressionMode === 'simple') {
+        setExpressionMode('expression');
+        setExpression('');
+        setCursorPosition(0);
+        setPreviewResult(displayValue);
+      }
+      // Pre-fill graph expression with current expression if graph is blank
+      if (expression) {
+        setGraphExpression(expression);
+      }
+    } else {
+      // mode is 'simple' or 'expression' — switch back to calc mode
+      setAppMode('calc');
+      setExpressionMode(mode);
+      if (mode === 'expression') {
+        setExpression('');
+        setCursorPosition(0);
+        setPreviewResult(displayValue);
+      }
+      if (mode === 'simple') {
+        setExpression('');
+        setCursorPosition(0);
+        setPreviewResult('');
+      }
     }
-    // Simple mode: displayValue is already the current value, just clear expression state
-    if (mode === 'simple') {
-      setExpression('');
-      setCursorPosition(0);
-      setPreviewResult('');
-    }
-  }, [displayValue]);
+  }, [expressionMode, expression, displayValue]);
 
   const handleExpressionClick = useCallback((position: number) => {
     setCursorPosition(position);
@@ -586,7 +604,7 @@ function App() {
       expression={expression}
       cursorPosition={cursorPosition}
       previewResult={previewResult}
-      onModeChange={handleModeChange}
+      onModeSelect={handleModeSelect}
       onExpressionClick={handleExpressionClick}
       angleMode={angleMode}
       onAngleModeToggle={handleAngleModeToggle}
@@ -596,6 +614,7 @@ function App() {
       onAutocompleteSelect={handleAutocompleteSelect}
       scientificPanelOpen={scientificPanelOpen}
       onScientificToggle={handleScientificToggle}
+      appMode={appMode}
       graphExpression={graphExpression}
       graphInputValue={graphInputValue}
       graphVisible={graphVisible}
